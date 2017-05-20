@@ -14,7 +14,24 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Canvas Grid.Row="0" Grid.Column="0" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            
+            <Canvas.Resources>
+                <ControlTemplate x:Key="DesignerItemTemplate" TargetType="ContentControl">
+                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
+                </ControlTemplate>
+            </Canvas.Resources>
+            <ContentControl Name="DesignerItem"
+
+                   Width="100"
+
+                   Height="100"
+
+                   Canvas.Top="100"
+
+                   Canvas.Left="100"
+
+                   Template="{StaticResource DesignerItemTemplate}">
+                <Ellipse Fill="Blue"/>
+            </ContentControl>
         </Canvas>
     </Grid>
 </Window>
