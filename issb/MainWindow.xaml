@@ -15,11 +15,30 @@
         </Grid.ColumnDefinitions>
         <Canvas Grid.Row="0" Grid.Column="0" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Canvas.Resources>
-                <ControlTemplate x:Key="DesignerItemControlTemplate" TargetType="ContentControl">
+                <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="Control">
                     <Grid>
-                        <local:DragThumb
-                            DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                            Cursor="SizeAll" />
+                        <local:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 -4 0 0"
+          VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                        <local:ResizeThumb Width="3" Cursor="SizeWE" Margin="-4 0 0 0"
+          VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                        <local:ResizeThumb Width="3" Cursor="SizeWE" Margin="0 0 -4 0"
+          VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+                        <local:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 0 0 -4"
+          VerticalAlignment="Bottom"  HorizontalAlignment="Stretch"/>
+                        <local:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="-6 -6 0 0"
+          VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                        <local:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 -6 -6 0"
+          VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                        <local:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="-6 0 0 -6"
+          VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                        <local:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 -6 -6"
+          VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                    </Grid>
+                </ControlTemplate>
+                <ControlTemplate x:Key="DesignerItemControlTemplate" TargetType="ContentControl">
+                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                        <local:DragThumb Cursor="SizeAll" />
+                        <Control Template="{StaticResource ResizeDecoratorTemplate}"/>
                         <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
                     </Grid>
                 </ControlTemplate>
