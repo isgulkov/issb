@@ -2,8 +2,10 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace issb {
-    public class DragThumb : Thumb {
+namespace issb
+{
+    public class DragThumb : Thumb
+    {
         private void DraggableThumb_DragDelta(object sender, DragDeltaEventArgs eventArgs)
         {
             Control item = DataContext as Control;
