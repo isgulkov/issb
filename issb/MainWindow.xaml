@@ -30,7 +30,7 @@
                             Canvas.Top="100"
                             Canvas.Left="100"
                             Template="{StaticResource DesignerItemControlTemplate}">
-                <Ellipse Fill="Blue"/>
+                <Ellipse Fill="Blue" IsHitTestVisible="False"/>
             </ContentControl>
         </Canvas>
     </Grid>
