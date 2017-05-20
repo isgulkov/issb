@@ -17,7 +17,7 @@
             <Canvas.Resources>
                 <ControlTemplate x:Key="DesignerItemControlTemplate" TargetType="ContentControl">
                     <Grid>
-                        <local:DraggableThumb
+                        <local:DragThumb
                             DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                             Cursor="SizeAll" />
                         <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
