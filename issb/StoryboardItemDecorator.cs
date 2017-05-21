@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace issb
 {
-    public class DesignerItemDecorator : Control
+    public class StoryboardItemDecorator : Control
     {
         private Adorner adorner;
 
@@ -20,10 +20,10 @@ namespace issb
         }
 
         public static readonly DependencyProperty ShowDecoratorProperty =
-            DependencyProperty.Register("ShowDecorator", typeof(bool), typeof(DesignerItemDecorator),
+            DependencyProperty.Register("ShowDecorator", typeof(bool), typeof(StoryboardItemDecorator),
             new FrameworkPropertyMetadata(false, new PropertyChangedCallback(ShowDecoratorProperty_Changed)));
 
-        public DesignerItemDecorator()
+        public StoryboardItemDecorator()
         {
             Unloaded += new RoutedEventHandler(this.DesignerItemDecorator_Unloaded);
         }
@@ -81,7 +81,7 @@ namespace issb
 
         private static void ShowDecoratorProperty_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DesignerItemDecorator decorator = (DesignerItemDecorator)d;
+            StoryboardItemDecorator decorator = (StoryboardItemDecorator)d;
             bool showDecorator = (bool)e.NewValue;
 
             if (showDecorator)

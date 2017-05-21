@@ -22,7 +22,7 @@
                         <sb:DragThumb Cursor="SizeAll" Template="{StaticResource DragThumbTemplate}" />
                         <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
                               Margin="{TemplateBinding Padding}"/>
-                        <sb:DesignerItemDecorator x:Name="ItemDecorator"/>
+                        <sb:StoryboardItemDecorator x:Name="ItemDecorator"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Selector.IsSelected" Value="True">
