@@ -3,9 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:issb"
         mc:Ignorable="d"
-        Title="issb" Height="350" Width="525">
+        Title="issb" Height="350" Width="525" MouseEnter="Window_MouseEnter" MouseLeave="Window_MouseLeave">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/StoryboardItem.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -13,43 +19,22 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Canvas Grid.Row="0" Grid.Column="0" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Canvas.Resources>
-                <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="Control">
-                    <Grid>
-                        <local:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 -4 0 0"
-          VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-                        <local:ResizeThumb Width="3" Cursor="SizeWE" Margin="-4 0 0 0"
-          VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
-                        <local:ResizeThumb Width="3" Cursor="SizeWE" Margin="0 0 -4 0"
-          VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
-                        <local:ResizeThumb Height="3" Cursor="SizeNS" Margin="0 0 0 -4"
-          VerticalAlignment="Bottom"  HorizontalAlignment="Stretch"/>
-                        <local:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="-6 -6 0 0"
-          VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                        <local:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="0 -6 -6 0"
-          VerticalAlignment="Top" HorizontalAlignment="Right"/>
-                        <local:ResizeThumb Width="7" Height="7" Cursor="SizeNESW" Margin="-6 0 0 -6"
-          VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-                        <local:ResizeThumb Width="7" Height="7" Cursor="SizeNWSE" Margin="0 0 -6 -6"
-          VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-                    </Grid>
-                </ControlTemplate>
-                <ControlTemplate x:Key="DesignerItemControlTemplate" TargetType="ContentControl">
-                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-                        <local:DragThumb Cursor="SizeAll" />
-                        <Control Template="{StaticResource ResizeDecoratorTemplate}"/>
-                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
-                    </Grid>
-                </ControlTemplate>
-            </Canvas.Resources>
-            <ContentControl Name="DesignerItem"
+        <Canvas x:Name="MainCanvas" Grid.Row="0" Grid.Column="0" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ContentControl Name="DesignerItem1"
                             Width="100"
                             Height="100"
                             Canvas.Top="100"
                             Canvas.Left="100"
-                            Template="{StaticResource DesignerItemControlTemplate}">
+                            Style="{StaticResource StoryboardItemStyle}">
                 <Ellipse Fill="Blue" IsHitTestVisible="False"/>
+            </ContentControl>
+            <ContentControl Name="DesignerItem2"
+                            Width="100"
+                            Height="100"
+                            Canvas.Top="100"
+                            Canvas.Left="250"
+                            Style="{StaticResource StoryboardItemStyle}">
+                <Ellipse Fill="Red" IsHitTestVisible="False"/>
             </ContentControl>
         </Canvas>
     </Grid>
