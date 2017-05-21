@@ -57,9 +57,12 @@
     </ApplicationDefinition>
     <Compile Include="Adorners\ResizeRotateAdorner.cs" />
     <Compile Include="Adorners\ResizeRotateChrome.cs" />
+    <Compile Include="Adorners\MultipleSelectionAdorner.cs" />
     <Compile Include="RotateThumb.cs" />
-    <Compile Include="StoryboardItemDecorator.cs" />
+    <Compile Include="ResizeRotateDecorator.cs" />
     <Compile Include="ResizeThumb.cs" />
+    <Compile Include="StoryboardCanvas.cs" />
+    <Compile Include="StoryboardItem.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

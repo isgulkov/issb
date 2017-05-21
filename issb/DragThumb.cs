@@ -1,27 +1,51 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace issb
 {
     public class DragThumb : Thumb
     {
-        private void DraggableThumb_DragDelta(object sender, DragDeltaEventArgs eventArgs)
+        StoryboardItem CurrentItem;
+        StoryboardCanvas CurrentCanvas;
+
+        private void DragThumb_DragStarted(object sender, DragStartedEventArgs eventArgs)
         {
-            Control item = DataContext as Control;
+            CurrentItem = DataContext as StoryboardItem;
 
-            if(item != null) {
-                double leftOffset = Canvas.GetLeft(item);
-                double topOffset = Canvas.GetTop(item);
+            if(CurrentItem != null) {
+                CurrentCanvas = VisualTreeHelper.GetParent(CurrentItem) as StoryboardCanvas;
+            }
+        }
 
-                Canvas.SetLeft(item, leftOffset + eventArgs.HorizontalChange);
-                Canvas.SetTop(item, topOffset + eventArgs.VerticalChange);
+        private void DragThumb_DragDelta(object sender, DragDeltaEventArgs eventArgs)
+        {
+            if(CurrentItem != null && CurrentCanvas != null && CurrentItem.IsSelected) {
+                double minLeft = double.MaxValue;
+                double minTop = double.MaxValue;
+
+                foreach(StoryboardItem item in CurrentCanvas.SelectedItems) {
+                    minLeft = Math.Min(Canvas.GetLeft(item), minLeft);
+                    minTop = Math.Min(Canvas.GetTop(item), minTop);
+                }
+
+                double dHorizontal = Math.Max(-minLeft, eventArgs.HorizontalChange);
+                double dVertical = Math.Max(-minTop, eventArgs.VerticalChange);
+
+                foreach(StoryboardItem item in CurrentCanvas.SelectedItems) {
+                    Canvas.SetLeft(item, Canvas.GetLeft(item) + dHorizontal);
+                    Canvas.SetTop(item, Canvas.GetTop(item) + dVertical);
+                }
+
+                eventArgs.Handled = true;
             }
         }
 
         public DragThumb()
         {
-            DragDelta += new DragDeltaEventHandler(DraggableThumb_DragDelta);
+            DragStarted += new DragStartedEventHandler(DragThumb_DragStarted);
+            DragDelta += new DragDeltaEventHandler(DragThumb_DragDelta);
         }
     }
 }

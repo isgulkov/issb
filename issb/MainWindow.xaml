@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sb="clr-namespace:issb"
         mc:Ignorable="d"
         Title="issb" Height="350" Width="525" MouseEnter="Window_MouseEnter" MouseLeave="Window_MouseLeave">
     <Window.Resources>
@@ -19,23 +20,27 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="MainCanvas" Grid.Row="0" Grid.Column="0" Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ContentControl Name="DesignerItem1"
+        <ScrollViewer Name="StoryboardScrollViewer" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <sb:StoryboardCanvas x:Name="MainCanvas" Grid.Row="0" Grid.Column="0" Margin="10"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="1000" MinWidth="1000"
+                                 AllowDrop="True" Background="White">
+                <sb:StoryboardItem x:Name="DesignerItem1"
                             Width="100"
                             Height="100"
                             Canvas.Top="100"
                             Canvas.Left="100"
                             Style="{StaticResource StoryboardItemStyle}">
-                <Ellipse Fill="Blue" IsHitTestVisible="False"/>
-            </ContentControl>
-            <ContentControl Name="DesignerItem2"
+                    <Ellipse Fill="Blue" IsHitTestVisible="False"/>
+                </sb:StoryboardItem>
+                <sb:StoryboardItem x:Name="DesignerItem2"
                             Width="100"
                             Height="100"
                             Canvas.Top="100"
                             Canvas.Left="250"
                             Style="{StaticResource StoryboardItemStyle}">
-                <Rectangle Fill="Red" IsHitTestVisible="False"/>
-            </ContentControl>
-        </Canvas>
+                    <Rectangle Fill="Red" IsHitTestVisible="False"/>
+                </sb:StoryboardItem>
+            </sb:StoryboardCanvas>
+        </ScrollViewer>
     </Grid>
 </Window>

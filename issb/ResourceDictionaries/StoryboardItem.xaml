@@ -17,16 +17,15 @@
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ContentControl">
-                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-                        <sb:DragThumb Cursor="SizeAll" Template="{StaticResource DragThumbTemplate}" />
-                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
-                              Margin="{TemplateBinding Padding}"/>
-                        <sb:ResizeRotateDecorator x:Name="ItemDecorator"/>
+                <ControlTemplate TargetType="{x:Type sb:StoryboardItem}">
+                    <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=.}">
+                        <sb:DragThumb x:Name="PART_DragThumb" Cursor="SizeAll" Template="{StaticResource DragThumbTemplate}" />
+                        <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding ContentControl.Content}" Margin="{TemplateBinding Padding}" />
+                        <sb:ResizeRotateDecorator x:Name="PART_DesignerItemDecorator" />
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Selector.IsSelected" Value="True">
-                            <Setter TargetName="ItemDecorator" Property="ShowDecorator" Value="True"/>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="PART_DesignerItemDecorator" Property="ShowDecorator" Value="True" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
