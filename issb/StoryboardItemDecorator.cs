@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows;
@@ -11,7 +8,7 @@ namespace issb
 {
     public class StoryboardItemDecorator : Control
     {
-        private Adorner adorner;
+        private Adorner Adorner;
 
         public bool ShowDecorator
         {
@@ -20,8 +17,11 @@ namespace issb
         }
 
         public static readonly DependencyProperty ShowDecoratorProperty =
-            DependencyProperty.Register("ShowDecorator", typeof(bool), typeof(StoryboardItemDecorator),
-            new FrameworkPropertyMetadata(false, new PropertyChangedCallback(ShowDecoratorProperty_Changed)));
+            DependencyProperty.Register(
+                "ShowDecorator",
+                typeof(bool), typeof(StoryboardItemDecorator),
+                new FrameworkPropertyMetadata(false, new PropertyChangedCallback(ShowDecoratorProperty_Changed))
+                );
 
         public StoryboardItemDecorator()
         {
@@ -30,52 +30,44 @@ namespace issb
 
         private void HideAdorner()
         {
-            if (this.adorner != null)
-            {
-                this.adorner.Visibility = Visibility.Hidden;
+            if(Adorner != null) {
+                Adorner.Visibility = Visibility.Hidden;
             }
         }
 
         private void ShowAdorner()
         {
-            if (this.adorner == null)
-            {
+            if(Adorner == null) {
                 AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(this);
 
-                if (adornerLayer != null)
-                {
-                    ContentControl designerItem = this.DataContext as ContentControl;
+                if(adornerLayer != null) {
+                    ContentControl designerItem = DataContext as ContentControl;
                     Canvas canvas = VisualTreeHelper.GetParent(designerItem) as Canvas;
-                    this.adorner = new ResizeAdorner(designerItem);
-                    adornerLayer.Add(this.adorner);
+                    Adorner = new ResizeAdorner(designerItem);
+                    adornerLayer.Add(Adorner);
 
-                    if (this.ShowDecorator)
-                    {
-                        this.adorner.Visibility = Visibility.Visible;
+                    if(ShowDecorator) {
+                        Adorner.Visibility = Visibility.Visible;
                     }
-                    else
-                    {
-                        this.adorner.Visibility = Visibility.Hidden;
+                    else {
+                        Adorner.Visibility = Visibility.Hidden;
                     }
                 }
             }
-            else
-            {
-                this.adorner.Visibility = Visibility.Visible;
+            else {
+                Adorner.Visibility = Visibility.Visible;
             }
         }
 
         private void DesignerItemDecorator_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (this.adorner != null)
-            {
+            if(Adorner != null) {
                 AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(this);
-                if (adornerLayer != null)
-                {
-                    adornerLayer.Remove(this.adorner);
+                if(adornerLayer != null) {
+                    adornerLayer.Remove(Adorner);
                 }
 
-                this.adorner = null;
+                Adorner = null;
             }
         }
 
@@ -84,12 +76,10 @@ namespace issb
             StoryboardItemDecorator decorator = (StoryboardItemDecorator)d;
             bool showDecorator = (bool)e.NewValue;
 
-            if (showDecorator)
-            {
+            if(showDecorator) {
                 decorator.ShowAdorner();
             }
-            else
-            {
+            else {
                 decorator.HideAdorner();
             }
         }
