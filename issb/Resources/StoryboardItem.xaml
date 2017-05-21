@@ -3,7 +3,7 @@
                     xmlns:sb="clr-namespace:issb">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="ResizeChrome.xaml"/>
+        <ResourceDictionary Source="ResizeRotateChrome.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="DragThumbTemplate" TargetType="{x:Type sb:DragThumb}">

@@ -43,7 +43,7 @@ namespace issb
                 if(adornerLayer != null) {
                     ContentControl designerItem = DataContext as ContentControl;
                     Canvas canvas = VisualTreeHelper.GetParent(designerItem) as Canvas;
-                    Adorner = new ResizeAdorner(designerItem);
+                    Adorner = new ResizeRotateAdorner(designerItem);
                     adornerLayer.Add(Adorner);
 
                     if(ShowDecorator) {

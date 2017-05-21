@@ -34,7 +34,7 @@
                             Canvas.Top="100"
                             Canvas.Left="250"
                             Style="{StaticResource StoryboardItemStyle}">
-                <Ellipse Fill="Red" IsHitTestVisible="False"/>
+                <Rectangle Fill="Red" IsHitTestVisible="False"/>
             </ContentControl>
         </Canvas>
     </Grid>

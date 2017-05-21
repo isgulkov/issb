@@ -13,10 +13,10 @@
         <Setter Property="Stroke" Value="Black"/>
     </Style>
 
-    <Style TargetType="{x:Type sb:ResizeChrome}">
+    <Style TargetType="{x:Type sb:ResizeRotateChrome}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type sb:ResizeChrome}">
+                <ControlTemplate TargetType="{x:Type sb:ResizeRotateChrome}">
                     <Grid>
                         <Grid Opacity="0" Margin="-3">
                             <sb:ResizeThumb Height="3"
@@ -59,10 +59,19 @@
                              Cursor="SizeNWSE"
                              VerticalAlignment="Bottom"
                              HorizontalAlignment="Right"/>
+                            <sb:RotateThumb Width="8"
+                             Height="8"
+                             Margin="0,-25,0,0"
+                             Cursor="Cross"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Center"/>
                         </Grid>
 
                         <Grid IsHitTestVisible="False" Opacity="1" Margin="-3">
                             <Rectangle SnapsToDevicePixels="True" StrokeThickness="1" Margin="1" Stroke="Gray"/>
+                            <Line StrokeThickness="1" X1="0" Y1="0" X2="0" Y2="25" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                  Margin="0,-25,0,0" Stroke="Gray"/>
+                            <Ellipse Style="{StaticResource ThumbCorner}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-1,-25,0,0"/>
                             <Rectangle Style="{StaticResource ThumbCorner}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                             <Rectangle Style="{StaticResource ThumbCorner}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
                             <Rectangle Style="{StaticResource ThumbCorner}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>

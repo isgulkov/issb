@@ -5,10 +5,10 @@ using System.Windows.Media;
 
 namespace issb
 {
-    public class ResizeAdorner : Adorner
+    public class ResizeRotateAdorner : Adorner
     {
         private VisualCollection Visuals;
-        private ResizeChrome Chrome;
+        private ResizeRotateChrome Chrome;
 
         protected override int VisualChildrenCount
         {
@@ -18,10 +18,10 @@ namespace issb
             }
         }
 
-        public ResizeAdorner(ContentControl designerItem) : base(designerItem)
+        public ResizeRotateAdorner(ContentControl designerItem) : base(designerItem)
         {
             SnapsToDevicePixels = true;
-            Chrome = new ResizeChrome();
+            Chrome = new ResizeRotateChrome();
             Chrome.DataContext = designerItem;
             Visuals = new VisualCollection(this);
             Visuals.Add(Chrome);
