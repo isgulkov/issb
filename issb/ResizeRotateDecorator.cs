@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace issb
 {
-    public class StoryboardItemDecorator : Control
+    public class ResizeRotateDecorator : Control
     {
         private Adorner Adorner;
 
@@ -19,13 +19,13 @@ namespace issb
         public static readonly DependencyProperty ShowDecoratorProperty =
             DependencyProperty.Register(
                 "ShowDecorator",
-                typeof(bool), typeof(StoryboardItemDecorator),
+                typeof(bool), typeof(ResizeRotateDecorator),
                 new FrameworkPropertyMetadata(false, new PropertyChangedCallback(ShowDecoratorProperty_Changed))
                 );
 
-        public StoryboardItemDecorator()
+        public ResizeRotateDecorator()
         {
-            Unloaded += new RoutedEventHandler(this.DesignerItemDecorator_Unloaded);
+            Unloaded += new RoutedEventHandler(DesignerItemDecorator_Unloaded);
         }
 
         private void HideAdorner()
@@ -73,7 +73,7 @@ namespace issb
 
         private static void ShowDecoratorProperty_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            StoryboardItemDecorator decorator = (StoryboardItemDecorator)d;
+            ResizeRotateDecorator decorator = (ResizeRotateDecorator)d;
             bool showDecorator = (bool)e.NewValue;
 
             if(showDecorator) {

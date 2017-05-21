@@ -73,11 +73,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Resources\StoryboardItem.xaml">
+    <Page Include="ResourceDictionaries\StoryboardItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\ResizeRotateChrome.xaml">
+    <Page Include="ResourceDictionaries\ResizeRotateChrome.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
