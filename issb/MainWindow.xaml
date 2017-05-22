@@ -5,39 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sb="clr-namespace:issb"
         mc:Ignorable="d"
-        Title="issb" Height="350" Width="525" MouseEnter="Window_MouseEnter" MouseLeave="Window_MouseLeave">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ResourceDictionaries/StoryboardItem.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+        Title="issb" Height="480" Width="640">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="120" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ScrollViewer Name="StoryboardScrollViewer" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <sb:StoryboardCanvas x:Name="MainCanvas" Grid.Row="0" Grid.Column="0" Margin="10"
+        <sb:Toolbox Background="LightGray">
+            <ItemsControl.Items>
+                <Ellipse Fill="Green" IsHitTestVisible="False" />
+            </ItemsControl.Items>
+        </sb:Toolbox>
+        <ScrollViewer Name="StoryboardScrollViewer" Grid.Row="1" Grid.Column="0"
+                      Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <sb:StoryboardCanvas x:Name="MainCanvas" Margin="10"
                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="1000" MinWidth="1000"
                                  AllowDrop="True" Background="White">
                 <sb:StoryboardItem x:Name="DesignerItem1"
                             Width="100"
                             Height="100"
                             Canvas.Top="100"
-                            Canvas.Left="100"
-                            Style="{StaticResource StoryboardItemStyle}">
+                            Canvas.Left="100">
                     <Ellipse Fill="Blue" IsHitTestVisible="False"/>
                 </sb:StoryboardItem>
                 <sb:StoryboardItem x:Name="DesignerItem2"
                             Width="100"
                             Height="100"
                             Canvas.Top="100"
-                            Canvas.Left="250"
-                            Style="{StaticResource StoryboardItemStyle}">
+                            Canvas.Left="250">
                     <Rectangle Fill="Red" IsHitTestVisible="False"/>
                 </sb:StoryboardItem>
             </sb:StoryboardCanvas>

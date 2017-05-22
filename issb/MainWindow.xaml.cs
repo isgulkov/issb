@@ -12,19 +12,5 @@ namespace issb {
         {
             InitializeComponent();
         }
-
-        private void Window_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            foreach(Control child in MainCanvas.Children) {
-                Selector.SetIsSelected(child, true);
-            }
-        }
-
-        private void Window_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            foreach(Control child in MainCanvas.Children) {
-                Selector.SetIsSelected(child, false);
-            }
-        }
     }
 }
