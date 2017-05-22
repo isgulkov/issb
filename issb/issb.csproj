@@ -64,6 +64,7 @@
     <Compile Include="RotateThumb.cs" />
     <Compile Include="ResizeRotateDecorator.cs" />
     <Compile Include="ResizeThumb.cs" />
+    <Compile Include="StoryboardBackground.cs" />
     <Compile Include="StoryboardCanvas.cs" />
     <Compile Include="StoryboardItem.cs" />
     <Compile Include="Toolbox.cs" />

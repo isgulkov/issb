@@ -18,11 +18,30 @@
             </MenuItem>
         </Menu>
         <DockPanel>
-            <sb:Toolbox DockPanel.Dock="Top" Background="LightCyan">
-                <ItemsControl.Items>
-                    <Ellipse Fill="Green" IsHitTestVisible="False" />
-                </ItemsControl.Items>
-            </sb:Toolbox>
+            <TabControl DockPanel.Dock="Top">
+                <TabItem Header="Персонажи">
+                    <sb:Toolbox Background="LightCyan">
+                        <ItemsControl.Items>
+                            <sb:ToolboxItem Mode="StoryboardItem">
+                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                            </sb:ToolboxItem>
+                        </ItemsControl.Items>
+                    </sb:Toolbox>
+                </TabItem>
+                <TabItem Header="Фон">
+                    <sb:Toolbox Background="LightCyan">
+                        <ItemsControl.Items>
+                            <sb:ToolboxItem Mode="StoryboardBackground">
+                                <Image>
+                                    <Image.Source>
+                                        <BitmapImage UriSource="C:\Users\Public\Pictures\Sample Pictures\Tulips.jpg"/>
+                                    </Image.Source>
+                                </Image>
+                            </sb:ToolboxItem>
+                        </ItemsControl.Items>
+                    </sb:Toolbox>
+                </TabItem>
+            </TabControl>
             <ScrollViewer Name="StoryboardScrollViewer"
                       Background="LightGray" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <sb:StoryboardCanvas x:Name="MainCanvas" Margin="2"

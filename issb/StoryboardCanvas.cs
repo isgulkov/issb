@@ -72,7 +72,7 @@ namespace issb
                 string c = XamlWriter.Save(Children[2]);
             }
 
-            string xamlString = eventArgs.Data.GetData("DESIGNER_ITEM") as string;
+            string xamlString = eventArgs.Data.GetData("STORYBOARD_ITEM") as string;
 
             if(!String.IsNullOrEmpty(xamlString)) {
                 FrameworkElement content = XamlReader.Load(XmlReader.Create(new StringReader(xamlString))) as FrameworkElement;

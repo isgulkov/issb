@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media.Imaging;
 
 namespace issb {
     /// <summary>
@@ -20,8 +21,15 @@ namespace issb {
              */
 
             base.OnContentRendered(e);
-            
-            NewDocumentMenuItem_Click(null, null);
+
+            //NewDocumentMenuItem_Click(null, null);
+
+            StoryboardBackground bg = new StoryboardBackground(2);
+
+            bg.InitializeCanvas(MainCanvas);
+
+            bg.AddImageToFrame(0, new BitmapImage(new Uri(@"C:\Users\Public\Pictures\Sample Pictures\Chrysanthemum.jpg")));
+            bg.AddImageToFrame(1, new BitmapImage(new Uri(@"C:\Users\Public\Pictures\Sample Pictures\Desert.jpg")));
         }
 
         private void NewDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)

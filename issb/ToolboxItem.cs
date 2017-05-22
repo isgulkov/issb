@@ -8,7 +8,14 @@ namespace issb
 {
     public class ToolboxItem : ContentControl
     {
+        public enum ItemMode { StoryboardItem, StoryboardBackground }
+
         private Point? DragStartPoint = null;
+
+        public ItemMode Mode
+        {
+            get; set;
+        }
 
         static ToolboxItem()
         {
@@ -35,7 +42,7 @@ namespace issb
                     (SystemParameters.MinimumVerticalDragDistance <= Math.Abs(position.Y - DragStartPoint.Value.Y))) {
                     string xamlString = XamlWriter.Save(Content);
 
-                    DataObject dataObject = new DataObject("DESIGNER_ITEM", xamlString);
+                    DataObject dataObject = new DataObject("STORYBOARD_ITEM", xamlString);
 
                     if(dataObject != null) {
                         DragDrop.DoDragDrop(this, dataObject, DragDropEffects.Copy);
