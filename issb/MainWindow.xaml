@@ -10,6 +10,16 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
                 <MenuItem Click="NewDocumentMenuItem_Click" Header="_Новый" />
+                <MenuItem Header="_Открыть" />
+                <MenuItem Header="_Сохранить" />
+                <MenuItem Header="Сохранить _как..." />
+                <Separator />
+                <MenuItem Header="Импорт">
+                    <MenuItem Header="Персонажи"/>
+                    <MenuItem Header="Фоны"/>
+                </MenuItem>
+                <MenuItem Header="Экспорт..."/>
+
                 <Separator />
                 <MenuItem Header="_Выход" />
             </MenuItem>

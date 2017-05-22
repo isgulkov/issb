@@ -59,7 +59,7 @@ namespace issb
             }
         }
 
-        private void DesignerItemDecorator_Unloaded(object sender, RoutedEventArgs e)
+        private void DesignerItemDecorator_Unloaded(object sender, RoutedEventArgs eventArgs)
         {
             if(Adorner != null) {
                 AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(this);
@@ -71,10 +71,10 @@ namespace issb
             }
         }
 
-        private static void ShowDecoratorProperty_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ShowDecoratorProperty_Changed(DependencyObject d, DependencyPropertyChangedEventArgs eventArgs)
         {
             ResizeRotateDecorator decorator = (ResizeRotateDecorator)d;
-            bool showDecorator = (bool)e.NewValue;
+            bool showDecorator = (bool)eventArgs.NewValue;
 
             if(showDecorator) {
                 decorator.ShowAdorner();

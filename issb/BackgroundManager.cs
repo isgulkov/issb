@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace issb
 {
-    public class StoryboardBackground
+    public class BackgroundManager
     {
         int BackgroundWidth = 500;
         int BackgroundHeight = 500;
@@ -19,7 +19,7 @@ namespace issb
         List<Rect> FrameRects;
         List<Image> FrameBackgrounds;
 
-        public StoryboardBackground(int numFrames /* TODO: background settings */)
+        public BackgroundManager(int numFrames /* TODO: background settings */)
         {
             NumFrames = numFrames;
 

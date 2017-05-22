@@ -15,7 +15,7 @@ namespace issb
     {
         private Point? DragStartPoint = null;
 
-        public StoryboardBackground Background { get; set; }
+        public BackgroundManager Background { get; set; }
 
         public IEnumerable<StoryboardItem> SelectedItems
         {

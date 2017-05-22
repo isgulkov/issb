@@ -23,7 +23,7 @@ namespace issb
             DragStarted += new DragStartedEventHandler(RotateThumb_DragStarted);
         }
 
-        private void RotateThumb_DragStarted(object sender, DragStartedEventArgs e)
+        private void RotateThumb_DragStarted(object sender, DragStartedEventArgs eventArgs)
         {
             StoryboardItem = DataContext as ContentControl;
 
@@ -51,7 +51,7 @@ namespace issb
             }
         }
 
-        private void RotateThumb_DragDelta(object sender, DragDeltaEventArgs e)
+        private void RotateThumb_DragDelta(object sender, DragDeltaEventArgs eventArgs)
         {
             if(StoryboardItem != null && StoryboardCanvas != null) {
                 Point currentPoint = Mouse.GetPosition(StoryboardCanvas);

@@ -14,17 +14,17 @@ namespace issb {
             InitializeComponent();
         }
 
-        protected override void OnContentRendered(EventArgs e)
+        protected override void OnContentRendered(EventArgs eventArgs)
         {
             /*
              * TODO: remove
              */
 
-            base.OnContentRendered(e);
+            base.OnContentRendered(eventArgs);
 
             //NewDocumentMenuItem_Click(null, null);
 
-            StoryboardBackground bg = new StoryboardBackground(2);
+            BackgroundManager bg = new BackgroundManager(2);
 
             bg.InitializeCanvas(MainCanvas);
 
