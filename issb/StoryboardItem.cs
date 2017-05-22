@@ -17,17 +17,17 @@ namespace issb
         public static readonly DependencyProperty IsSelectedProperty =
           DependencyProperty.Register("IsSelected", typeof(bool), typeof(StoryboardItem), new FrameworkPropertyMetadata(false));
 
-        public static readonly DependencyProperty MoveThumbTemplateProperty =
-            DependencyProperty.RegisterAttached("MoveThumbTemplate", typeof(ControlTemplate), typeof(StoryboardItem));
+        public static readonly DependencyProperty DragThumbTemplateProperty =
+            DependencyProperty.RegisterAttached("DragThumbTemplate", typeof(ControlTemplate), typeof(StoryboardItem));
 
         public static ControlTemplate GetDragThumbTemplate(UIElement element)
         {
-            return (ControlTemplate)element.GetValue(MoveThumbTemplateProperty);
+            return (ControlTemplate)element.GetValue(DragThumbTemplateProperty);
         }
 
         public static void SetMoveThumbTemplate(UIElement element, ControlTemplate value)
         {
-            element.SetValue(MoveThumbTemplateProperty, value);
+            element.SetValue(DragThumbTemplateProperty, value);
         }
 
         static StoryboardItem()

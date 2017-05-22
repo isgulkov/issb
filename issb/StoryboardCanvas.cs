@@ -66,17 +66,23 @@ namespace issb
         {
             base.OnDrop(eventArgs);
 
+            if(Children.Count == 3) {
+                string a = XamlWriter.Save(Children[0]);
+                string b = XamlWriter.Save(Children[1]);
+                string c = XamlWriter.Save(Children[2]);
+            }
+
             string xamlString = eventArgs.Data.GetData("DESIGNER_ITEM") as string;
 
             if(!String.IsNullOrEmpty(xamlString)) {
-                StoryboardItem newItem = null;
                 FrameworkElement content = XamlReader.Load(XmlReader.Create(new StringReader(xamlString))) as FrameworkElement;
 
                 if(content != null) {
-                    newItem = new StoryboardItem();
+                    StoryboardItem newItem = new StoryboardItem();
                     newItem.Content = content;
 
                     Point position = eventArgs.GetPosition(this);
+
                     if(content.MinHeight != 0 && content.MinWidth != 0) {
                         newItem.Width = content.MinWidth * 2; ;
                         newItem.Height = content.MinHeight * 2;
@@ -85,11 +91,13 @@ namespace issb
                         newItem.Width = 65;
                         newItem.Height = 65;
                     }
-                    StoryboardCanvas.SetLeft(newItem, Math.Max(0, position.X - newItem.Width / 2));
-                    StoryboardCanvas.SetTop(newItem, Math.Max(0, position.Y - newItem.Height / 2));
-                    this.Children.Add(newItem);
 
-                    this.DeselectAll();
+                    SetLeft(newItem, Math.Max(0, position.X - newItem.Width / 2));
+                    SetTop(newItem, Math.Max(0, position.Y - newItem.Height / 2));
+
+                    Children.Add(newItem);
+
+                    DeselectAll();
                     newItem.IsSelected = true;
                 }
 
