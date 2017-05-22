@@ -12,5 +12,21 @@ namespace issb {
         {
             InitializeComponent();
         }
+
+        protected override void OnContentRendered(EventArgs e)
+        {
+            /*
+             * TODO: remove
+             */
+
+            base.OnContentRendered(e);
+            
+            NewDocumentMenuItem_Click(null, null);
+        }
+
+        private void NewDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            (new NewDocumentDialog()).ShowDialog();
+        }
     }
 }

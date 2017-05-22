@@ -58,6 +58,9 @@
     <Compile Include="Adorners\ResizeRotateAdorner.cs" />
     <Compile Include="Adorners\ResizeRotateChrome.cs" />
     <Compile Include="Adorners\MultipleSelectionAdorner.cs" />
+    <Compile Include="Dialogs\NewDocumentDialog.xaml.cs">
+      <DependentUpon>NewDocumentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RotateThumb.cs" />
     <Compile Include="ResizeRotateDecorator.cs" />
     <Compile Include="ResizeThumb.cs" />
@@ -65,6 +68,10 @@
     <Compile Include="StoryboardItem.cs" />
     <Compile Include="Toolbox.cs" />
     <Compile Include="ToolboxItem.cs" />
+    <Page Include="Dialogs\NewDocumentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -117,6 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\new_document.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

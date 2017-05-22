@@ -1,0 +1,59 @@
+﻿<Window x:Class="issb.NewDocumentDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Новый документ..."
+        SizeToContent="WidthAndHeight" ResizeMode="NoResize"
+        Icon="../Icons/new_document.png">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="12,0"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style x:Key="EnableIfRadio1Checked" TargetType="DockPanel">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=radio1, Path=IsChecked}" Value="False">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="EnableIfRadio2Checked" TargetType="DockPanel">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=radio2, Path=IsChecked}" Value="False">
+                    <Setter Property="IsEnabled" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border Padding="10">
+        <StackPanel>
+            <StackPanel>
+                <RadioButton Name="radio1" GroupName="template_mode" IsChecked="True" Content="Выбрать готовый шаблон: "/>
+                <DockPanel Style="{StaticResource EnableIfRadio1Checked}">
+                    <TextBox Width="250" />
+                    <Button Content="Открыть..." />
+                </DockPanel>
+            </StackPanel>
+
+            <StackPanel>
+                <RadioButton Name="radio2" GroupName="template_mode" Content="Открыть шаблон из файла: "/>
+                <DockPanel Style="{StaticResource EnableIfRadio2Checked}">
+                    <TextBox Width="250" />
+                    <Button Content="Открыть..." />
+                </DockPanel>
+            </StackPanel>
+
+            <Separator/>
+
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="5">
+                <Button Content="Отмена" />
+                <Button Content="Создать" />
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

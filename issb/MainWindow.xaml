@@ -9,7 +9,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="_Новый" />
+                <MenuItem Click="NewDocumentMenuItem_Click" Header="_Новый" />
                 <Separator />
                 <MenuItem Header="_Выход" />
             </MenuItem>
