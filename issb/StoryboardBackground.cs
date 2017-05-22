@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace issb
 {
-    class StoryboardBackground
+    public class StoryboardBackground
     {
         int BackgroundWidth = 500;
         int BackgroundHeight = 500;
@@ -26,8 +26,10 @@ namespace issb
             FrameRects = new List<Rect>(new Rect[] { new Rect(10, 10, 480, 235), new Rect(10, 255, 480, 235) });
         }
 
-        public void InitializeCanvas(Canvas canvas)
+        public void InitializeCanvas(StoryboardCanvas canvas)
         {
+            canvas.Background = this;
+
             canvas.Width = BackgroundWidth;
             canvas.Height = BackgroundHeight;
 
@@ -54,6 +56,8 @@ namespace issb
 
                         Panel.SetZIndex(element, -1000);
 
+                        element.IsHitTestVisible = false;
+
                         canvas.Children.Add(element);
                     }
 
@@ -64,13 +68,22 @@ namespace issb
             }
         }
 
-        public void AddImageToFrame(int frameIndex, BitmapImage bitmapImage)
+        public void AddImageToFrame(int frameIndex, ImageSource bitmapImage)
         {
             if(frameIndex < 0 || frameIndex >= NumFrames) {
                 throw new ArgumentOutOfRangeException($"Frame index {frameIndex} out of range ({NumFrames} frames only)");
             }
 
             FrameBackgrounds[frameIndex].Source = bitmapImage;
+        }
+
+        public void AddImageAt(Point point, ImageSource bitmapImage)
+        {
+            for(int i = 0; i < NumFrames; i++) {
+                if(FrameRects[i].Contains(point)) {
+                    AddImageToFrame(i, bitmapImage);
+                }
+            }
         }
     }
 }

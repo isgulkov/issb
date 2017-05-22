@@ -15,6 +15,8 @@ namespace issb
     {
         private Point? DragStartPoint = null;
 
+        public StoryboardBackground Background { get; set; }
+
         public IEnumerable<StoryboardItem> SelectedItems
         {
             get
@@ -66,22 +68,16 @@ namespace issb
         {
             base.OnDrop(eventArgs);
 
-            if(Children.Count == 3) {
-                string a = XamlWriter.Save(Children[0]);
-                string b = XamlWriter.Save(Children[1]);
-                string c = XamlWriter.Save(Children[2]);
-            }
+            string xamlString;
 
-            string xamlString = eventArgs.Data.GetData("STORYBOARD_ITEM") as string;
+            Point position = eventArgs.GetPosition(this);
 
-            if(!String.IsNullOrEmpty(xamlString)) {
+            if((xamlString = eventArgs.Data.GetData("STORYBOARD_ITEM") as string) != null) {
                 FrameworkElement content = XamlReader.Load(XmlReader.Create(new StringReader(xamlString))) as FrameworkElement;
 
                 if(content != null) {
                     StoryboardItem newItem = new StoryboardItem();
                     newItem.Content = content;
-
-                    Point position = eventArgs.GetPosition(this);
 
                     if(content.MinHeight != 0 && content.MinWidth != 0) {
                         newItem.Width = content.MinWidth * 2; ;
@@ -102,6 +98,13 @@ namespace issb
                 }
 
                 eventArgs.Handled = true;
+            }
+            else if((xamlString = eventArgs.Data.GetData("STORYBOARD_BACKGROUND") as string) != null) {
+                Image content = XamlReader.Load(XmlReader.Create(new StringReader(xamlString))) as Image;
+
+                if(content != null && Background != null) {
+                    Background.AddImageAt(position, content.Source);
+                }
             }
         }
     }

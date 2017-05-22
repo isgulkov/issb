@@ -42,7 +42,18 @@ namespace issb
                     (SystemParameters.MinimumVerticalDragDistance <= Math.Abs(position.Y - DragStartPoint.Value.Y))) {
                     string xamlString = XamlWriter.Save(Content);
 
-                    DataObject dataObject = new DataObject("STORYBOARD_ITEM", xamlString);
+                    DataObject dataObject = null;
+
+                    switch(Mode) {
+                        case ItemMode.StoryboardItem:
+                            dataObject = new DataObject("STORYBOARD_ITEM", xamlString);
+                            break;
+                        case ItemMode.StoryboardBackground:
+                            dataObject = new DataObject("STORYBOARD_BACKGROUND", xamlString);
+                            break;
+                        default:
+                            break;
+                    }
 
                     if(dataObject != null) {
                         DragDrop.DoDragDrop(this, dataObject, DragDropEffects.Copy);

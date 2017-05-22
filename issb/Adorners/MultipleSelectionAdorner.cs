@@ -98,15 +98,21 @@ namespace issb
         {
             Rect selectionRect = new Rect(SelectionStartPoint.Value, SelectionEndPoint.Value);
 
-            foreach(StoryboardItem item in Canvas.Children) {
-                Rect itemRect = VisualTreeHelper.GetDescendantBounds(item);
-                Rect itemBounds = item.TransformToAncestor(Canvas).TransformBounds(itemRect);
+            foreach(UIElement element in Canvas.Children) {
+                if(!(element is StoryboardItem)) {
+                    continue;
+                }
+
+                StoryboardItem storyboardItem = (StoryboardItem)element;
+
+                Rect itemRect = VisualTreeHelper.GetDescendantBounds(storyboardItem);
+                Rect itemBounds = storyboardItem.TransformToAncestor(Canvas).TransformBounds(itemRect);
 
                 if(selectionRect.Contains(itemBounds)) {
-                    item.IsSelected = true;
+                    storyboardItem.IsSelected = true;
                 }
                 else {
-                    item.IsSelected = false;
+                    storyboardItem.IsSelected = false;
                 }
             }
         }

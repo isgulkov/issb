@@ -25,6 +25,27 @@
                             <sb:ToolboxItem Mode="StoryboardItem">
                                 <Ellipse Fill="Green" IsHitTestVisible="False" />
                             </sb:ToolboxItem>
+                            <sb:ToolboxItem Mode="StoryboardItem">
+                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                            </sb:ToolboxItem>
+                            <sb:ToolboxItem Mode="StoryboardItem">
+                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                            </sb:ToolboxItem>
+                            <sb:ToolboxItem Mode="StoryboardItem">
+                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                            </sb:ToolboxItem>
+                            <sb:ToolboxItem Mode="StoryboardItem">
+                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                            </sb:ToolboxItem>
+                            <sb:ToolboxItem Mode="StoryboardItem">
+                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                            </sb:ToolboxItem>
+                            <sb:ToolboxItem Mode="StoryboardItem">
+                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                            </sb:ToolboxItem>
+                            <sb:ToolboxItem Mode="StoryboardItem">
+                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                            </sb:ToolboxItem>
                         </ItemsControl.Items>
                     </sb:Toolbox>
                 </TabItem>

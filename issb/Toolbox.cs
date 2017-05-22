@@ -5,7 +5,7 @@ namespace issb
 {
     public class Toolbox : ItemsControl
     {
-        private Size _DefaultItemSize = new Size(100, 100);
+        private Size _DefaultItemSize = new Size(50, 50);
 
         public Size DefaultItemSize
         {
