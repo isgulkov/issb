@@ -40,7 +40,7 @@ namespace issb
 
             newLibrary.Backgrounds = BitMapImagesFromNodes(backgroundNodes);
 
-            XmlNodeList templateNodes = xmlDoc.GetElementsByTagName("Item");
+            XmlNodeList templateNodes = xmlDoc.GetElementsByTagName("Template");
 
             List<BackgroundTemplate> templates = new List<BackgroundTemplate>();
 
@@ -60,6 +60,8 @@ namespace issb
                     catch(Exception) { }
                 }
             }
+
+            newLibrary.Tempates = templates;
 
             return newLibrary;
         }
