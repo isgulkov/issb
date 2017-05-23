@@ -31,7 +31,7 @@ namespace issb {
                 PresetLibrary presetLibrary = null;
 
                 using(FileStream fileStream = new FileStream(@"PresetLibraries\DefaultPresets.xml", FileMode.Open)) {
-                    presetLibrary = PresetLibrary.LoadFromXML(fileStream);
+                    presetLibrary = PresetLibrary.LoadFromXML(fileStream, @"PresetLibraries\DefaultPresets.xml");
                 }
 
                 LoadBitmapImagesIntoItemsToolbox(presetLibrary.Items);

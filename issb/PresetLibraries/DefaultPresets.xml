@@ -7,6 +7,6 @@
     <Background Src="C:\Users\Public\Pictures\Sample Pictures\Desert.jpg" />
   </Backgrounds>
   <Templates>
-    <Template Src="W:\issb\issb\BackgroundTemplates\template01.xml" />
+    <Template Src="..\BackgroundTemplates\template01.xml" />
   </Templates>
 </Presets>
