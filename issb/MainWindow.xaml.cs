@@ -21,6 +21,27 @@ namespace issb
 
         List<BackgroundTemplate> CurrentTemplates = new List<BackgroundTemplate>();
 
+        string _CurrentFilePath = null;
+
+        string CurrentFilePath
+        {
+            get
+            {
+                return _CurrentFilePath;
+            }
+            set
+            {
+                _CurrentFilePath = value;
+
+                if(string.IsNullOrEmpty(value)) {
+                    Title = "issb";
+                }
+                else {
+                    Title = $"{Path.GetFileName(value)} — issb";
+                }
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -63,6 +84,8 @@ namespace issb
             newDocumentDialog.ShowDialog();
 
             if(newDocumentDialog.SelectedTemplate != null) {
+                CurrentFilePath = null;
+
                 MainCanvas.Children.Clear();
 
                 CurrentBackgoundManager = new BackgroundManager(newDocumentDialog.SelectedTemplate);
@@ -177,15 +200,51 @@ namespace issb
             }
         }
 
+        private void OpenDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            
+        }
+
         private void SaveDocumentMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            StoryboardDocument doc = StoryboardDocument.LoadFromCanvas(MainCanvas);
-
-            using(FileStream fileStream = new FileStream("pidor.xml", FileMode.Create)) {
-                doc.SaveToXML(fileStream);
+            if(CurrentFilePath == null) {
+                SaveDocumentAs();
             }
+            else {
+                SaveDocument(CurrentFilePath);
+            }
+        }
 
-            MessageBox.Show("hey");
+        private void SaveDocumentAsMenuItem_Click_1(object sender, RoutedEventArgs eventArgs)
+        {
+            SaveDocumentAs();
+        }
+
+        void SaveDocument(string filePath)
+        {
+            StoryboardDocument document = StoryboardDocument.LoadFromCanvas(MainCanvas);
+
+            try {
+                using(FileStream fileStream = new FileStream(filePath, FileMode.Create)) {
+                    document.SaveToXML(fileStream);
+                }
+            }
+            catch(Exception ex) {
+                MessageBox.Show(this, $"Сохранить документ не удалось\r\n\r\n{ex.Message}");
+            }
+        }
+
+        void SaveDocumentAs()
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+
+            saveDialog.Filter = "XML-формат видеораскадровки (*.sb)|*.sb";
+
+            if(saveDialog.ShowDialog().Value) {
+                CurrentFilePath = saveDialog.FileName;
+
+                SaveDocument(saveDialog.FileName);
+            }
         }
     }
 }

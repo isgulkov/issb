@@ -11,9 +11,9 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="_Новый" Click="NewDocumentMenuItem_Click"/>
-                <MenuItem Header="_Открыть" />
+                <MenuItem Header="_Открыть" Click="OpenDocumentMenuItem_Click" />
                 <MenuItem Header="_Сохранить" Click="SaveDocumentMenuItem_Click" />
-                <MenuItem Header="Сохранить _как..." />
+                <MenuItem Header="Сохранить _как..." Click="SaveDocumentAsMenuItem_Click_1" />
                 <Separator />
                 <MenuItem Header="Импорт">
                     <MenuItem Header="Персонажи..." Click="ImportItemsMenuItem_Click"/>
@@ -37,25 +37,11 @@
                                 <Ellipse Fill="Green" IsHitTestVisible="False" />
                             </sb:ToolboxItem>
                             <sb:ToolboxItem Mode="StoryboardItem">
-                                <Ellipse Fill="Green" IsHitTestVisible="False" />
-                            </sb:ToolboxItem>
-                            <sb:ToolboxItem Mode="StoryboardItem">
-                                <Ellipse Fill="Green" IsHitTestVisible="False" />
-                            </sb:ToolboxItem>
-                            <sb:ToolboxItem Mode="StoryboardItem">
-                                <Ellipse Fill="Green" IsHitTestVisible="False" />
-                            </sb:ToolboxItem>
-                            <sb:ToolboxItem Mode="StoryboardItem">
-                                <Ellipse Fill="Green" IsHitTestVisible="False" />
-                            </sb:ToolboxItem>
-                            <sb:ToolboxItem Mode="StoryboardItem">
-                                <Ellipse Fill="Green" IsHitTestVisible="False" />
-                            </sb:ToolboxItem>
-                            <sb:ToolboxItem Mode="StoryboardItem">
-                                <Ellipse Fill="Green" IsHitTestVisible="False" />
-                            </sb:ToolboxItem>
-                            <sb:ToolboxItem Mode="StoryboardItem">
-                                <Ellipse Fill="Green" IsHitTestVisible="False" />
+                                <Image>
+                                    <Image.Source>
+                                        <BitmapImage UriSource="C:\Users\Public\Pictures\Sample Pictures\Desert.jpg"/>
+                                    </Image.Source>
+                                </Image>
                             </sb:ToolboxItem>
                         </ItemsControl.Items>
                     </sb:Toolbox>
