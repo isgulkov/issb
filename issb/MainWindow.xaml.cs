@@ -59,6 +59,8 @@ namespace issb {
 
                 importDialog.FilesToImport = openDialog.FileNames;
 
+                importDialog.Owner = this;
+
                 importDialog.ShowDialog();
             }
         }
