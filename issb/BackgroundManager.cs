@@ -11,7 +11,7 @@ namespace issb
 {
     public class BackgroundManager
     {
-        public BackgroundTemplate CurrentTempalte;
+        BackgroundTemplate CurrentTempalte;
         List<Image> FrameBackgrounds;
 
         public BackgroundManager(BackgroundTemplate backgroundTempalte)

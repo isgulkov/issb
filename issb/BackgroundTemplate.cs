@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml;
 using System.Windows;
@@ -8,17 +7,35 @@ using System.Windows;
 namespace issb
 {
     /// <summary>
-    /// Описывает шаблон фона для видеораскадровки. Объекты данного класса предполагаются неизменяемыми.
+    /// Описывает шаблон фона видеораскадровки. Объекты данного класса предполагаются неизменяемыми
     /// </summary>
     public class BackgroundTemplate
     {
+        /// <summary>
+        /// Ширина холста
+        /// </summary>
         public int CanvasWidth { get; protected set; }
+
+        /// <summary>
+        /// Высота холста
+        /// </summary>
         public int CanvasHeight { get; protected set; }
 
+        /// <summary>
+        /// Прямоугольник, каждый из которых представляет собой границу соответствующего кадра
+        /// </summary>
         public IReadOnlyCollection<Rect> FrameRects { get; protected set; }
 
+        /// <summary>
+        /// Количество кадров в шаблоне
+        /// </summary>
         public int NumFrames { get; protected set; }
 
+        /// <summary>
+        /// Считывает данный шаблон из переданного файла в XML-формате (см. ПЗ)
+        /// </summary>
+        /// <param name="fileStream">Поток, содержащий доступный для чтения файл в XML-формате (см. ПЗ)</param>
+        /// <returns>Вновь считанный из файла объект-шаблон</returns>
         public static BackgroundTemplate ReadFromXML(FileStream fileStream)
         {
             BackgroundTemplate newTemplate = new BackgroundTemplate();
@@ -50,21 +67,6 @@ namespace issb
             newTemplate.NumFrames = frameRects.Count;
 
             return newTemplate;
-        }
-
-        public void WriteToXML(FileStream fileStream)
-        {
-            using(StreamWriter streamWriter = new StreamWriter(fileStream)) {
-                streamWriter.WriteLine("<?xml version='1.0'?>");
-
-                streamWriter.WriteLine($"<BackgroundTemplate CanvasWidth=\"{CanvasWidth}\" CanvasHeight=\"{CanvasHeight}\">");
-
-                foreach(Rect frameRect in FrameRects) {
-                    streamWriter.WriteLine($"\t<Frame X=\"{frameRect.X}\" Y=\"{frameRect.Y}\" Width=\"{frameRect.Width}\" Height=\"{frameRect.Height}\" />");
-                }
-
-                streamWriter.WriteLine("</BackgroundTemplate>");
-            }
         }
     }
 }

@@ -17,14 +17,14 @@
         </Style>
         <Style x:Key="EnableIfRadio1Checked" TargetType="DockPanel">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=radio1, Path=IsChecked}" Value="False">
+                <DataTrigger Binding="{Binding ElementName=Radio1, Path=IsChecked}" Value="False">
                     <Setter Property="IsEnabled" Value="False"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="EnableIfRadio2Checked" TargetType="DockPanel">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=radio2, Path=IsChecked}" Value="False">
+                <DataTrigger Binding="{Binding ElementName=Radio2, Path=IsChecked}" Value="False">
                     <Setter Property="IsEnabled" Value="False"/>
                 </DataTrigger>
             </Style.Triggers>
@@ -33,7 +33,7 @@
     <Border Padding="10">
         <StackPanel>
             <StackPanel>
-                <RadioButton Name="radio1" GroupName="template_mode" IsChecked="True" Content="Выбрать готовый шаблон: "/>
+                <RadioButton x:Name="Radio1" GroupName="template_mode" IsChecked="True" Content="Выбрать готовый шаблон: "/>
                 <DockPanel Style="{StaticResource EnableIfRadio1Checked}">
                     <TextBox Width="250" />
                     <Button Content="Открыть..." />
@@ -41,18 +41,18 @@
             </StackPanel>
 
             <StackPanel>
-                <RadioButton Name="radio2" GroupName="template_mode" Content="Открыть шаблон из файла: "/>
+                <RadioButton x:Name="Radio2" GroupName="template_mode" Content="Открыть шаблон из файла: "/>
                 <DockPanel Style="{StaticResource EnableIfRadio2Checked}">
-                    <TextBox Width="250" />
-                    <Button Content="Открыть..." />
+                    <TextBox Name="FilePath" Width="250" />
+                    <Button Content="Открыть..." Click="BrowseButtonClick" />
                 </DockPanel>
             </StackPanel>
 
             <Separator/>
 
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="5">
-                <Button Content="Отмена" />
-                <Button Content="Создать" />
+                <Button Content="Отмена" Click="CancelButtonClick" />
+                <Button Content="Создать" Click="Button_Click" />
             </StackPanel>
         </StackPanel>
     </Border>
