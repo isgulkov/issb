@@ -16,6 +16,8 @@ namespace issb {
     public partial class MainWindow : Window {
         BackgroundManager CurrentBackgoundManager;
 
+        List<BackgroundTemplate> CurrentTemplates = new List<BackgroundTemplate>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -35,6 +37,8 @@ namespace issb {
                 LoadBitmapImagesIntoItemsToolbox(presetLibrary.Items);
 
                 LoadBitmapImagesIntoBackgroundsToolbox(presetLibrary.Backgrounds);
+                
+                CurrentTemplates = CurrentTemplates.Concat(presetLibrary.Tempates).ToList();
             }
             catch(Exception ex) {
                 MessageBox.Show(this, $"Произошла ошибка при загрузке предустановленного контента\r\n\r\n{ex.Message}");
@@ -50,6 +54,7 @@ namespace issb {
         {
             NewDocumentDialog newDocumentDialog = new NewDocumentDialog();
 
+            newDocumentDialog.PresetTemplates = CurrentTemplates;
             newDocumentDialog.Owner = this; // for WidnowsStartupLocation="CenterOwner"
 
             newDocumentDialog.ShowDialog();
