@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
@@ -122,11 +123,55 @@ namespace issb {
             LoadBitmapImagesIntoItemsToolbox(bitmapImages);
         }
 
-        private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs e)
+        private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
             IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
             LoadBitmapImagesIntoBackgroundsToolbox(bitmapImages);
+        }
+
+        private void ExportMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+
+            saveDialog.Filter = "Изображение в формате PNG (*.png)|*.png";
+            
+            if(saveDialog.ShowDialog().Value) {
+                try {
+                    SaveCanvasToPath(saveDialog.FileName);
+                }
+                catch(Exception ex) {
+                    MessageBox.Show(this, $"При экспортировании документа произошла ошибка\r\n\r\n{ex.Message}");
+                }
+            }
+        }
+
+        void SaveCanvasToPath(string filePath)
+        {
+            Transform transform = MainCanvas.LayoutTransform;
+
+            MainCanvas.LayoutTransform = null;
+
+            Size size = new Size(MainCanvas.ActualWidth, MainCanvas.ActualHeight);
+
+            MainCanvas.Measure(size);
+            MainCanvas.Arrange(new Rect(size));
+
+            RenderTargetBitmap renderBitmap = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96.0, 96.0, PixelFormats.Pbgra32);
+
+            renderBitmap.Render(MainCanvas);
+
+            MainCanvas.LayoutTransform = transform;
+
+            WriteableBitmap writableBitmap = new WriteableBitmap(renderBitmap);
+
+            using(FileStream fileStream = new FileStream(filePath, FileMode.Create)) {
+                PngBitmapEncoder encoder = new PngBitmapEncoder();
+
+                encoder.Frames.Add(BitmapFrame.Create(writableBitmap));
+
+                encoder.Save(fileStream);
+            }
         }
     }
 }
