@@ -6,7 +6,8 @@
         mc:Ignorable="d"
         Title="Новый документ..."
         SizeToContent="WidthAndHeight" ResizeMode="NoResize"
-        Icon="../Icons/new_document.png">
+        Icon="../Icons/new_document.png"
+        WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="5"/>

@@ -35,6 +35,8 @@ namespace issb {
         {
             NewDocumentDialog newDocumentDialog = new NewDocumentDialog();
 
+            newDocumentDialog.Owner = this; // for WidnowsStartupLocation="CenterOwner"
+
             newDocumentDialog.ShowDialog();
 
             if(newDocumentDialog.SelectedTemplate != null) {
