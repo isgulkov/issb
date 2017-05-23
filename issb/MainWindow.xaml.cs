@@ -100,6 +100,7 @@ namespace issb
                 Image newImage = new Image();
 
                 newImage.Source = bitmapImage;
+                newImage.IsHitTestVisible = false;
 
                 newToolboxItem.Content = newImage;
                 newToolboxItem.Mode = itemMode;
