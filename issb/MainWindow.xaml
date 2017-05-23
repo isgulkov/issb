@@ -19,7 +19,7 @@
                     <MenuItem Header="Персонажи..." Click="ImportItemsMenuItem_Click"/>
                     <MenuItem Header="Фоны..." Click="ImportBackgroundImagesMenuItem_Click"/>
                 </MenuItem>
-                <MenuItem Header="Экспорт..."/>
+                <MenuItem Header="Экспорт..." Click="ExportMenuItem_Click"/>
 
                 <Separator />
                 <MenuItem Header="_Выход" />
