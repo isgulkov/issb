@@ -17,9 +17,19 @@ using System.Windows.Shapes;
 
 namespace issb
 {
+    /// <summary>
+    /// Диалоговое окно, предназначенное для загрузки изображений из переданного списка файлов в соответствующие им объекты BitmapImage
+    /// </summary>
     public partial class ImportImagesDialog : Window
     {
+        /// <summary>
+        /// Передаваемый диалоговому окну список файлов
+        /// </summary>
         public string[] FilesToImport { get; set; }
+
+        /// <summary>
+        /// Коллекция вовзращаемых окном объектов BitmapImage
+        /// </summary>
         public IReadOnlyCollection<BitmapImage> LoadedBitmaps { get; private set; }
 
         BackgroundWorker LoadImagesWorker = new BackgroundWorker();
@@ -35,7 +45,7 @@ namespace issb
             LoadImagesWorker.ProgressChanged += LoadImagesWorker_ProgressChanged;
             LoadImagesWorker.RunWorkerCompleted += LoadImagesWorker_RunWorkerCompleted;
         }
-
+        
         void LoadImagesWorker_DoWork(object sender, DoWorkEventArgs eventArgs)
         {
             List<BitmapImage> bitmaps = new List<BitmapImage>();
@@ -47,6 +57,10 @@ namespace issb
                     LoadImagesWorker.ReportProgress(0, filename);
                 }
                 catch(Exception) { }
+
+                if(LoadImagesWorker.CancellationPending) {
+                    break;
+                }
             }
 
             LoadedBitmaps = bitmaps;
