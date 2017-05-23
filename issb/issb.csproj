@@ -65,6 +65,7 @@
     <Compile Include="Dialogs\NewDocumentDialog.xaml.cs">
       <DependentUpon>NewDocumentDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresetLoader.cs" />
     <Compile Include="RotateThumb.cs" />
     <Compile Include="ResizeRotateDecorator.cs" />
     <Compile Include="ResizeThumb.cs" />

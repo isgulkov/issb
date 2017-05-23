@@ -70,11 +70,9 @@ namespace issb {
 
             return null;
         }
-        
-        private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
-        {
-            IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
+        void LoadBitmapImagesIntoToolbox(IReadOnlyCollection<BitmapImage> bitmapImages, Toolbox toolbox, ToolboxItem.ItemMode itemMode)
+        {
             foreach(BitmapImage bitmapImage in bitmapImages) {
                 ToolboxItem newToolboxItem = new ToolboxItem();
 
@@ -83,28 +81,24 @@ namespace issb {
                 newImage.Source = bitmapImage;
 
                 newToolboxItem.Content = newImage;
-                newToolboxItem.Mode = ToolboxItem.ItemMode.StoryboardItem;
+                newToolboxItem.Mode = itemMode;
 
-                ItemsToolbox.Items.Add(newToolboxItem);
+                toolbox.Items.Add(newToolboxItem);
             }
+        }
+        
+        private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
+
+            LoadBitmapImagesIntoToolbox(bitmapImages, ItemsToolbox, ToolboxItem.ItemMode.StoryboardItem);
         }
 
         private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs e)
         {
             IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
-            foreach(BitmapImage bitmapImage in bitmapImages) {
-                ToolboxItem newToolboxItem = new ToolboxItem();
-
-                Image newImage = new Image();
-
-                newImage.Source = bitmapImage;
-
-                newToolboxItem.Content = newImage;
-                newToolboxItem.Mode = ToolboxItem.ItemMode.StoryboardBackground;
-
-                BackgroundsToolbox.Items.Add(newToolboxItem);
-            }
+            LoadBitmapImagesIntoToolbox(bitmapImages, BackgroundsToolbox, ToolboxItem.ItemMode.StoryboardBackground);
         }
     }
 }
