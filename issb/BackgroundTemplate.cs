@@ -32,7 +32,7 @@ namespace issb
         public int NumFrames { get; protected set; }
 
         /// <summary>
-        /// Считывает данный шаблон из переданного файла в XML-формате (см. ПЗ)
+        /// Считывает шаблон из переданного файла в XML-формате (см. ПЗ)
         /// </summary>
         /// <param name="fileStream">Поток, содержащий доступный для чтения файл в XML-формате (см. ПЗ)</param>
         /// <returns>Вновь считанный из файла объект-шаблон</returns>
@@ -67,6 +67,28 @@ namespace issb
             newTemplate.NumFrames = frameRects.Count;
 
             return newTemplate;
+        }
+
+        /// <summary>
+        /// Записывает данный шаблон в переданный файл в XML-формате (см. ПЗ)
+        /// </summary>
+        /// <param name="fileStream">Файл, в который предполагается записать шаблон</param>
+        /// <param name="includeHeader">Включить ли в вывод XML-заголовок (полезно, если нужно записать шаблон посреди файла)</param>
+        public void WriteAsXml(FileStream fileStream, bool includeHeader = true)
+        {
+            StreamWriter streamWriter = new StreamWriter(fileStream);
+
+            if(includeHeader) {
+                streamWriter.WriteLine("<?xml version='1.0'?>");
+            }
+
+            streamWriter.WriteLine($"<BackgroundTemplate CanvasWidth=\"{CanvasWidth}\" CanvasHeight=\"{CanvasHeight}\">");
+
+            foreach(Rect frameRect in FrameRects) {
+                streamWriter.WriteLine($"\t<Frame X=\"{frameRect.X}\" Y=\"{frameRect.Y}\" Width=\"{frameRect.Width}\" Height=\"{frameRect.Height}\" />");
+            }
+
+            streamWriter.WriteLine("</BackgroundTemplate>");
         }
     }
 }
