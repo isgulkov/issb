@@ -32,62 +32,29 @@ namespace issb
         /// </summary>
         public IReadOnlyCollection<BitmapImage> LoadedBitmaps { get; private set; }
 
-        BackgroundWorker LoadImagesWorker = new BackgroundWorker();
-
         public ImportImagesDialog()
         {
             InitializeComponent();
-
-            LoadImagesWorker.WorkerSupportsCancellation = true;
-            LoadImagesWorker.WorkerReportsProgress = true;
-
-            LoadImagesWorker.DoWork += LoadImagesWorker_DoWork;
-            LoadImagesWorker.ProgressChanged += LoadImagesWorker_ProgressChanged;
-            LoadImagesWorker.RunWorkerCompleted += LoadImagesWorker_RunWorkerCompleted;
-        }
-        
-        void LoadImagesWorker_DoWork(object sender, DoWorkEventArgs eventArgs)
-        {
-            List<BitmapImage> bitmaps = new List<BitmapImage>();
-
-            foreach(string filename in FilesToImport) {
-                try {
-                    Thread.Sleep(1000 / FilesToImport.Length);
-
-                    LoadImagesWorker.ReportProgress(0, filename);
-                }
-                catch(Exception) { }
-
-                if(LoadImagesWorker.CancellationPending) {
-                    break;
-                }
-            }
-
-            LoadedBitmaps = bitmaps;
-        }
-
-        void LoadImagesWorker_ProgressChanged(object sender, ProgressChangedEventArgs eventArgs)
-        {
-            ListBoxItem newItem = new ListBoxItem();
-
-            newItem.Content = eventArgs.UserState as string;
-
-            ProcessedFilesListBox.Items.Add(newItem);
-        }
-
-        void LoadImagesWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs eventArgs)
-        {
-            Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs eventArgs)
         {
-            LoadImagesWorker.RunWorkerAsync();
-        }
+            List<BitmapImage> loadedBitmaps = new List<BitmapImage>();
 
-        private void Button_Click(object sender, RoutedEventArgs eventArgs)
-        {
-            LoadImagesWorker.CancelAsync();
+            foreach(string filename in FilesToImport) {
+                try {
+                    loadedBitmaps.Add(new BitmapImage(new Uri(filename)));
+
+                    ListBoxItem newItem = new ListBoxItem();
+                    newItem.Content = filename;
+                    ProcessedFilesListBox.Items.Add(newItem);
+                }
+                catch(Exception) { }
+            }
+
+            LoadedBitmaps = loadedBitmaps;
+
+            Close();
         }
     }
 }

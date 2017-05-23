@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -48,7 +50,7 @@ namespace issb {
             }
         }
 
-        private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        IReadOnlyCollection<BitmapImage> ImportImages()
         {
             OpenFileDialog openDialog = new OpenFileDialog();
 
@@ -62,12 +64,47 @@ namespace issb {
                 importDialog.Owner = this;
 
                 importDialog.ShowDialog();
+
+                return importDialog.LoadedBitmaps;
+            }
+
+            return null;
+        }
+        
+        private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
+
+            foreach(BitmapImage bitmapImage in bitmapImages) {
+                ToolboxItem newToolboxItem = new ToolboxItem();
+
+                Image newImage = new Image();
+
+                newImage.Source = bitmapImage;
+
+                newToolboxItem.Content = newImage;
+                newToolboxItem.Mode = ToolboxItem.ItemMode.StoryboardItem;
+
+                ItemsToolbox.Items.Add(newToolboxItem);
             }
         }
 
         private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
+            foreach(BitmapImage bitmapImage in bitmapImages) {
+                ToolboxItem newToolboxItem = new ToolboxItem();
+
+                Image newImage = new Image();
+
+                newImage.Source = bitmapImage;
+
+                newToolboxItem.Content = newImage;
+                newToolboxItem.Mode = ToolboxItem.ItemMode.StoryboardBackground;
+
+                BackgroundsToolbox.Items.Add(newToolboxItem);
+            }
         }
     }
 }

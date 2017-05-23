@@ -31,7 +31,7 @@
         <DockPanel>
             <TabControl DockPanel.Dock="Top">
                 <TabItem Header="Персонажи">
-                    <sb:Toolbox Background="LightCyan">
+                    <sb:Toolbox x:Name="ItemsToolbox" Background="LightCyan">
                         <ItemsControl.Items>
                             <sb:ToolboxItem Mode="StoryboardItem">
                                 <Ellipse Fill="Green" IsHitTestVisible="False" />
@@ -61,7 +61,7 @@
                     </sb:Toolbox>
                 </TabItem>
                 <TabItem Header="Фон">
-                    <sb:Toolbox Background="LightCyan">
+                    <sb:Toolbox x:Name="BackgroundsToolbox" Background="LightCyan">
                         <ItemsControl.Items>
                             <sb:ToolboxItem Mode="StoryboardBackground">
                                 <Image>

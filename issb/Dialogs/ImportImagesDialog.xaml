@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Происходит импорт..." Height="300" Width="300" Loaded="Window_Loaded"
+        Title="Происходит импортирование..." Height="300" Width="300" Loaded="Window_Loaded"
         SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <Style TargetType="Button">
@@ -17,10 +17,7 @@
 
         </ListBox>
         <Border>
-            <Label Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Происходит импорт выбранных файлов..."/>
-        </Border>
-        <Border>
-            <Button Content="Отменить" Click="Button_Click"/>
+            <Label Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Происходит импортирование выбранных файлов..."/>
         </Border>
     </StackPanel>
 </Window>
