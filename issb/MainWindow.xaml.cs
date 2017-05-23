@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 
 namespace issb {
     /// <summary>
@@ -19,11 +23,9 @@ namespace issb {
 
         protected override void OnContentRendered(EventArgs eventArgs)
         {
-            /*
-             * TODO: remove
-             */
-
             base.OnContentRendered(eventArgs);
+            
+            //CreateNewDocument();
         }
 
         private void NewDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
@@ -45,6 +47,63 @@ namespace issb {
                 CurrentBackgoundManager = new BackgroundManager(newDocumentDialog.SelectedTemplate);
 
                 CurrentBackgoundManager.InitializeCanvas(MainCanvas);
+            }
+        }
+
+        IReadOnlyCollection<BitmapImage> ImportImages()
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+
+            openDialog.Multiselect = true;
+
+            if(openDialog.ShowDialog().Value) {
+                ImportImagesDialog importDialog = new ImportImagesDialog();
+
+                importDialog.FilesToImport = openDialog.FileNames;
+
+                importDialog.Owner = this;
+
+                importDialog.ShowDialog();
+
+                return importDialog.LoadedBitmaps;
+            }
+
+            return null;
+        }
+        
+        private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
+
+            foreach(BitmapImage bitmapImage in bitmapImages) {
+                ToolboxItem newToolboxItem = new ToolboxItem();
+
+                Image newImage = new Image();
+
+                newImage.Source = bitmapImage;
+
+                newToolboxItem.Content = newImage;
+                newToolboxItem.Mode = ToolboxItem.ItemMode.StoryboardItem;
+
+                ItemsToolbox.Items.Add(newToolboxItem);
+            }
+        }
+
+        private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
+
+            foreach(BitmapImage bitmapImage in bitmapImages) {
+                ToolboxItem newToolboxItem = new ToolboxItem();
+
+                Image newImage = new Image();
+
+                newImage.Source = bitmapImage;
+
+                newToolboxItem.Content = newImage;
+                newToolboxItem.Mode = ToolboxItem.ItemMode.StoryboardBackground;
+
+                BackgroundsToolbox.Items.Add(newToolboxItem);
             }
         }
     }

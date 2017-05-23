@@ -10,14 +10,14 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Click="NewDocumentMenuItem_Click" Header="_Новый" />
+                <MenuItem Header="_Новый" Click="NewDocumentMenuItem_Click"/>
                 <MenuItem Header="_Открыть" />
                 <MenuItem Header="_Сохранить" />
                 <MenuItem Header="Сохранить _как..." />
                 <Separator />
                 <MenuItem Header="Импорт">
-                    <MenuItem Header="Персонажи"/>
-                    <MenuItem Header="Фоны"/>
+                    <MenuItem Header="Персонажи..." Click="ImportItemsMenuItem_Click"/>
+                    <MenuItem Header="Фоны..." Click="ImportBackgroundImagesMenuItem_Click"/>
                 </MenuItem>
                 <MenuItem Header="Экспорт..."/>
 
@@ -31,7 +31,7 @@
         <DockPanel>
             <TabControl DockPanel.Dock="Top">
                 <TabItem Header="Персонажи">
-                    <sb:Toolbox Background="LightCyan">
+                    <sb:Toolbox x:Name="ItemsToolbox" Background="LightCyan">
                         <ItemsControl.Items>
                             <sb:ToolboxItem Mode="StoryboardItem">
                                 <Ellipse Fill="Green" IsHitTestVisible="False" />
@@ -61,7 +61,7 @@
                     </sb:Toolbox>
                 </TabItem>
                 <TabItem Header="Фон">
-                    <sb:Toolbox Background="LightCyan">
+                    <sb:Toolbox x:Name="BackgroundsToolbox" Background="LightCyan">
                         <ItemsControl.Items>
                             <sb:ToolboxItem Mode="StoryboardBackground">
                                 <Image>
