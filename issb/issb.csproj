@@ -58,13 +58,14 @@
     <Compile Include="Adorners\ResizeRotateAdorner.cs" />
     <Compile Include="Adorners\ResizeRotateChrome.cs" />
     <Compile Include="Adorners\MultipleSelectionAdorner.cs" />
+    <Compile Include="BackgroundTemplate.cs" />
     <Compile Include="Dialogs\NewDocumentDialog.xaml.cs">
       <DependentUpon>NewDocumentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="RotateThumb.cs" />
     <Compile Include="ResizeRotateDecorator.cs" />
     <Compile Include="ResizeThumb.cs" />
-    <Compile Include="StoryboardBackground.cs" />
+    <Compile Include="BackgroundManager.cs" />
     <Compile Include="StoryboardCanvas.cs" />
     <Compile Include="StoryboardItem.cs" />
     <Compile Include="Toolbox.cs" />
@@ -128,6 +129,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\new_document.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="BackgroundTemplates\template01.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

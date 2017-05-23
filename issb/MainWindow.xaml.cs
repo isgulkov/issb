@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -24,12 +25,20 @@ namespace issb {
 
             //NewDocumentMenuItem_Click(null, null);
 
-            BackgroundManager bg = new BackgroundManager(2);
+            BackgroundTemplate bTempalte = null;
 
-            bg.InitializeCanvas(MainCanvas);
+            using(FileStream fs = new FileStream(@"BackgroundTemplates\template010.xml", FileMode.Open)) {
+                bTempalte = BackgroundTemplate.ReadFromXML(fs);
+            }
 
-            bg.AddImageToFrame(0, new BitmapImage(new Uri(@"C:\Users\Public\Pictures\Sample Pictures\Chrysanthemum.jpg")));
-            bg.AddImageToFrame(1, new BitmapImage(new Uri(@"C:\Users\Public\Pictures\Sample Pictures\Desert.jpg")));
+            BackgroundManager bManager = new BackgroundManager(bTempalte);
+
+            bManager.InitializeCanvas(MainCanvas);
+
+            bManager.AddImageToFrame(0, new BitmapImage(new Uri(@"C:\Users\Public\Pictures\Sample Pictures\Chrysanthemum.jpg")));
+            bManager.AddImageToFrame(1, new BitmapImage(new Uri(@"C:\Users\Public\Pictures\Sample Pictures\Desert.jpg")));
+
+            bTempalte.WriteToXML(new FileStream(@"BackgroundTemplates\template010.xml", FileMode.OpenOrCreate));
         }
 
         private void NewDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)

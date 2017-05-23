@@ -11,39 +11,32 @@ namespace issb
 {
     public class BackgroundManager
     {
-        int BackgroundWidth = 500;
-        int BackgroundHeight = 500;
-
-        readonly int NumFrames;
-
-        List<Rect> FrameRects;
+        public BackgroundTemplate CurrentTempalte;
         List<Image> FrameBackgrounds;
 
-        public BackgroundManager(int numFrames /* TODO: background settings */)
+        public BackgroundManager(BackgroundTemplate backgroundTempalte)
         {
-            NumFrames = numFrames;
-
-            FrameRects = new List<Rect>(new Rect[] { new Rect(10, 10, 480, 235), new Rect(10, 255, 480, 235) });
+            CurrentTempalte = backgroundTempalte; 
         }
 
         public void InitializeCanvas(StoryboardCanvas canvas)
         {
             canvas.Background = this;
 
-            canvas.Width = BackgroundWidth;
-            canvas.Height = BackgroundHeight;
+            canvas.Width = CurrentTempalte.CanvasWidth;
+            canvas.Height = CurrentTempalte.CanvasHeight;
 
-            FrameBackgrounds = Enumerable.Repeat<Image>(null, NumFrames).ToList();
+            FrameBackgrounds = Enumerable.Repeat<Image>(null, CurrentTempalte.NumFrames).ToList();
 
             DrawingVisual drawingVisual = new DrawingVisual();
             using(DrawingContext drawingContext = drawingVisual.RenderOpen()) {
-                for(int i = 0; i < NumFrames; i++) {
+                for(int i = 0; i < CurrentTempalte.NumFrames; i++) {
                     Rectangle newRectangle = new Rectangle();
 
                     newRectangle.Stroke = Brushes.Black;
                     newRectangle.StrokeThickness = 1;
 
-                    Rect frameRect = FrameRects[i];
+                    Rect frameRect = CurrentTempalte.FrameRects.ElementAt(i);
 
                     Image newImage = new Image();
 
@@ -70,8 +63,8 @@ namespace issb
 
         public void AddImageToFrame(int frameIndex, ImageSource bitmapImage)
         {
-            if(frameIndex < 0 || frameIndex >= NumFrames) {
-                throw new ArgumentOutOfRangeException($"Frame index {frameIndex} out of range ({NumFrames} frames only)");
+            if(frameIndex < 0 || frameIndex >= CurrentTempalte.NumFrames) {
+                throw new ArgumentOutOfRangeException($"Frame index {frameIndex} out of range ({CurrentTempalte.NumFrames} frames only)");
             }
 
             FrameBackgrounds[frameIndex].Source = bitmapImage;
@@ -79,8 +72,8 @@ namespace issb
 
         public void AddImageAt(Point point, ImageSource bitmapImage)
         {
-            for(int i = 0; i < NumFrames; i++) {
-                if(FrameRects[i].Contains(point)) {
+            for(int i = 0; i < CurrentTempalte.NumFrames; i++) {
+                if(CurrentTempalte.FrameRects.ElementAt(i).Contains(point)) {
                     AddImageToFrame(i, bitmapImage);
                 }
             }
