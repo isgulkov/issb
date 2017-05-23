@@ -27,7 +27,7 @@ namespace issb
         /// <param name="canvas">Холст, на котором предполагается инициализовать фон</param>
         public void InitializeCanvas(StoryboardCanvas canvas)
         {
-            canvas.Background = this;
+            canvas.BackgroundManager = this;
 
             canvas.Width = CurrentTempalte.CanvasWidth;
             canvas.Height = CurrentTempalte.CanvasHeight;

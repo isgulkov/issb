@@ -15,7 +15,7 @@ namespace issb
     {
         private Point? DragStartPoint = null;
 
-        public BackgroundManager Background { get; set; }
+        public BackgroundManager BackgroundManager { get; set; }
 
         public IEnumerable<StoryboardItem> SelectedItems
         {
@@ -102,8 +102,8 @@ namespace issb
             else if((xamlString = eventArgs.Data.GetData("STORYBOARD_BACKGROUND") as string) != null) {
                 Image content = XamlReader.Load(XmlReader.Create(new StringReader(xamlString))) as Image;
 
-                if(content != null && Background != null) {
-                    Background.AddImageAt(position, content.Source);
+                if(content != null && BackgroundManager != null) {
+                    BackgroundManager.AddImageAt(position, content.Source);
                 }
             }
         }
