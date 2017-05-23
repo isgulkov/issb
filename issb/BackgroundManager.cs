@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace issb
 {
@@ -13,7 +14,7 @@ namespace issb
     /// </summary>
     public class BackgroundManager
     {
-        BackgroundTemplate CurrentTempalte;
+        public BackgroundTemplate CurrentTempalte { get; private set; }
         List<Image> FrameBackgrounds;
 
         public BackgroundManager(BackgroundTemplate backgroundTempalte)
@@ -79,6 +80,20 @@ namespace issb
             }
 
             FrameBackgrounds[frameIndex].Source = bitmapImage;
+        }
+
+        /// <summary>
+        /// Возвращает объект ImageSource, установленный в качестве фонового изображения для кадра с заданным индексом
+        /// </summary>
+        /// <param name="frameIndex">Индекс кадра, для которого предполагается возвратить ImageSource, установленный в качестве его фонового изображения</param>
+        /// <returns>Объект ImageSource, установленный в качестве фонового изображения для кадра с заданным индексом. Если для данного кадра фоновое изображение установлено, возвращает null</returns>
+        public ImageSource GetImageOfFrame(int frameIndex)
+        {
+            if(frameIndex < 0 || frameIndex >= CurrentTempalte.NumFrames) {
+                throw new ArgumentOutOfRangeException($"Frame index {frameIndex} out of range ({CurrentTempalte.NumFrames} frames only)");
+            }
+
+            return FrameBackgrounds[frameIndex].Source;
         }
 
         /// <summary>

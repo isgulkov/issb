@@ -12,7 +12,7 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="_Новый" Click="NewDocumentMenuItem_Click"/>
                 <MenuItem Header="_Открыть" />
-                <MenuItem Header="_Сохранить" />
+                <MenuItem Header="_Сохранить" Click="SaveDocumentMenuItem_Click" />
                 <MenuItem Header="Сохранить _как..." />
                 <Separator />
                 <MenuItem Header="Импорт">

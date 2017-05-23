@@ -71,6 +71,7 @@
     <Compile Include="ResizeThumb.cs" />
     <Compile Include="BackgroundManager.cs" />
     <Compile Include="StoryboardCanvas.cs" />
+    <Compile Include="StoryboardDocument.cs" />
     <Compile Include="StoryboardItem.cs" />
     <Compile Include="Toolbox.cs" />
     <Compile Include="ToolboxItem.cs" />

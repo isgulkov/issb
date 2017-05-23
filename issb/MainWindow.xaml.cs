@@ -173,5 +173,10 @@ namespace issb {
                 encoder.Save(fileStream);
             }
         }
+
+        private void SaveDocumentMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            StoryboardDocument.LoadFromCanvas(MainCanvas);
+        }
     }
 }
