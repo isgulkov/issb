@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<Presets>
+  <Items>
+    <Item Src="C:\Users\Public\Pictures\Sample Pictures\Tulips.jpg" />
+  </Items>
+  <Backgrounds>
+    <Background Src="C:\Users\Public\Pictures\Sample Pictures\Desert.jpg" />
+  </Backgrounds>
+  <Templates>
+    <Template Src="W:\issb\issb\BackgroundTemplates\template01.xml" />
+  </Templates>
+</Presets>

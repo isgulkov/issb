@@ -16,6 +16,8 @@ namespace issb {
     public partial class MainWindow : Window {
         BackgroundManager CurrentBackgoundManager;
 
+        List<BackgroundTemplate> CurrentTemplates = new List<BackgroundTemplate>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,8 +26,23 @@ namespace issb {
         protected override void OnContentRendered(EventArgs eventArgs)
         {
             base.OnContentRendered(eventArgs);
-            
-            //CreateNewDocument();
+
+            try {
+                PresetLibrary presetLibrary = null;
+
+                using(FileStream fileStream = new FileStream(@"PresetLibraries\DefaultPresets.xml", FileMode.Open)) {
+                    presetLibrary = PresetLibrary.LoadFromXML(fileStream);
+                }
+
+                LoadBitmapImagesIntoItemsToolbox(presetLibrary.Items);
+
+                LoadBitmapImagesIntoBackgroundsToolbox(presetLibrary.Backgrounds);
+                
+                CurrentTemplates = CurrentTemplates.Concat(presetLibrary.Tempates).ToList();
+            }
+            catch(Exception ex) {
+                MessageBox.Show(this, $"Произошла ошибка при загрузке предустановленного контента\r\n\r\n{ex.Message}");
+            }
         }
 
         private void NewDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
@@ -37,6 +54,7 @@ namespace issb {
         {
             NewDocumentDialog newDocumentDialog = new NewDocumentDialog();
 
+            newDocumentDialog.PresetTemplates = CurrentTemplates;
             newDocumentDialog.Owner = this; // for WidnowsStartupLocation="CenterOwner"
 
             newDocumentDialog.ShowDialog();
@@ -70,11 +88,9 @@ namespace issb {
 
             return null;
         }
-        
-        private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
-        {
-            IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
+        void LoadBitmapImagesIntoToolbox(IReadOnlyCollection<BitmapImage> bitmapImages, Toolbox toolbox, ToolboxItem.ItemMode itemMode)
+        {
             foreach(BitmapImage bitmapImage in bitmapImages) {
                 ToolboxItem newToolboxItem = new ToolboxItem();
 
@@ -83,28 +99,34 @@ namespace issb {
                 newImage.Source = bitmapImage;
 
                 newToolboxItem.Content = newImage;
-                newToolboxItem.Mode = ToolboxItem.ItemMode.StoryboardItem;
+                newToolboxItem.Mode = itemMode;
 
-                ItemsToolbox.Items.Add(newToolboxItem);
+                toolbox.Items.Add(newToolboxItem);
             }
+        }
+
+        void LoadBitmapImagesIntoItemsToolbox(IReadOnlyCollection<BitmapImage> bitmapImages)
+        {
+            LoadBitmapImagesIntoToolbox(bitmapImages, ItemsToolbox, ToolboxItem.ItemMode.StoryboardItem);
+        }
+
+        void LoadBitmapImagesIntoBackgroundsToolbox(IReadOnlyCollection<BitmapImage> bitmapImages)
+        {
+            LoadBitmapImagesIntoToolbox(bitmapImages, BackgroundsToolbox, ToolboxItem.ItemMode.StoryboardBackground);
+        }
+
+        private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
+
+            LoadBitmapImagesIntoItemsToolbox(bitmapImages);
         }
 
         private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs e)
         {
             IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
-            foreach(BitmapImage bitmapImage in bitmapImages) {
-                ToolboxItem newToolboxItem = new ToolboxItem();
-
-                Image newImage = new Image();
-
-                newImage.Source = bitmapImage;
-
-                newToolboxItem.Content = newImage;
-                newToolboxItem.Mode = ToolboxItem.ItemMode.StoryboardBackground;
-
-                BackgroundsToolbox.Items.Add(newToolboxItem);
-            }
+            LoadBitmapImagesIntoBackgroundsToolbox(bitmapImages);
         }
     }
 }

@@ -7,7 +7,7 @@
         Title="Новый документ..."
         SizeToContent="WidthAndHeight" ResizeMode="NoResize"
         Icon="../Icons/new_document.png"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="5"/>
@@ -36,8 +36,9 @@
             <StackPanel>
                 <RadioButton x:Name="Radio1" GroupName="template_mode" IsChecked="True" Content="Выбрать готовый шаблон: "/>
                 <DockPanel Style="{StaticResource EnableIfRadio1Checked}">
-                    <TextBox Width="250" />
-                    <Button Content="Открыть..." />
+                    <ComboBox Name="TemplatesComboBox">
+                        
+                    </ComboBox>
                 </DockPanel>
             </StackPanel>
 

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Windows;
+using System.Collections.Generic;
+using System.Windows.Controls;
 using Microsoft.Win32;
 
 namespace issb
@@ -8,6 +11,11 @@ namespace issb
     public partial class NewDocumentDialog : Window
     {
         BackgroundTemplate _SelectedTemplate;
+
+        /// <summary>
+        /// Передаваемый диалоговому окну набор шаблонов фона раскадровки
+        /// </summary>
+        public IReadOnlyCollection<BackgroundTemplate> PresetTemplates { get; set; }
 
         public BackgroundTemplate SelectedTemplate
         {
@@ -27,10 +35,10 @@ namespace issb
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs eventArgs)
         {
             if(Radio1.IsChecked.Value) {
-
+                SelectedTemplate = PresetTemplates.ElementAt(TemplatesComboBox.SelectedIndex);
             }
             else if(Radio2.IsChecked.Value) {
                 try {
@@ -45,12 +53,12 @@ namespace issb
 
         }
 
-        private void CancelButtonClick(object sender, RoutedEventArgs e)
+        private void CancelButtonClick(object sender, RoutedEventArgs eventArgs)
         {
             Close();
         }
 
-        private void BrowseButtonClick(object sender, RoutedEventArgs e)
+        private void BrowseButtonClick(object sender, RoutedEventArgs eventArgs)
         {
             OpenFileDialog dialog = new OpenFileDialog();
 
@@ -59,6 +67,24 @@ namespace issb
 
             if(dialog.ShowDialog().Value) {
                 FilePath.Text = dialog.FileName;
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs eventArgs)
+        {
+            if(PresetTemplates != null) {
+                foreach(BackgroundTemplate presetTemplate in PresetTemplates) {
+                    ComboBoxItem newComboBoxItem = new ComboBoxItem();
+
+                    newComboBoxItem.Content = $"Template with {presetTemplate.NumFrames} frames";
+
+                    TemplatesComboBox.Items.Add(newComboBoxItem);
+                }
+
+                TemplatesComboBox.SelectedIndex = 0;
+            }
+            else {
+                TemplatesComboBox.IsEnabled = false;
             }
         }
     }
