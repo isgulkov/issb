@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace issb
 {
+    /// <summary>
+    /// Управляет отрисовкой фона раскадровки на холсте
+    /// </summary>
     public class BackgroundManager
     {
         BackgroundTemplate CurrentTempalte;
@@ -19,6 +21,10 @@ namespace issb
             CurrentTempalte = backgroundTempalte; 
         }
 
+        /// <summary>
+        /// Инициализирует фон на выбранном холсте (отрисоывает прямоугольники, означающие границы кадров и создает соответствующие объекты типа Image)
+        /// </summary>
+        /// <param name="canvas">Холст, на котором предполагается инициализовать фон</param>
         public void InitializeCanvas(StoryboardCanvas canvas)
         {
             canvas.Background = this;
@@ -61,6 +67,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Устанавливают данное фоновое изображение для кадра с данным индексом
+        /// </summary>
+        /// <param name="frameIndex">Индекс кандра, для которого утсанавливается изображение</param>
+        /// <param name="bitmapImage">Изображение, которое устанавливается для данного кадра</param>
         public void AddImageToFrame(int frameIndex, ImageSource bitmapImage)
         {
             if(frameIndex < 0 || frameIndex >= CurrentTempalte.NumFrames) {
@@ -70,6 +81,13 @@ namespace issb
             FrameBackgrounds[frameIndex].Source = bitmapImage;
         }
 
+        /// <summary>
+        /// Устанавливают данное фоновое изображение для кадра, в который входит данная точка холста.
+        /// 
+        /// Если таких кадров несколько (не рекомендуется) фон устанавливается для всех таких кадров. Если таких кадров не существует, не изменяется ничего
+        /// </summary>
+        /// <param name="point">Точка, в которой предположительно находится кадр, для которого предполагается установить фоновое изображение</param>
+        /// <param name="bitmapImage">Изображение, которое предполагается установить для кадра в данной точке</param>
         public void AddImageAt(Point point, ImageSource bitmapImage)
         {
             for(int i = 0; i < CurrentTempalte.NumFrames; i++) {
