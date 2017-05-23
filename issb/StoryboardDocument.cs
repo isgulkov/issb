@@ -15,8 +15,7 @@ namespace issb
 
         List<ImageSource> FrameBackgrounds;
 
-        List<Rect> StoryboardItemRects;
-        List<ImageSource> StoryboardItemImageSources;
+        List<Tuple<Rect, ImageSource>> StoryboardItems;
 
         StoryboardDocument() { }
 
@@ -34,13 +33,13 @@ namespace issb
 
             newDocument.FrameBackgrounds = frameBackgrounds;
 
-            List<Rect> storyboardItemRects = new List<Rect>();
-            List<ImageSource> storyboardItemImageSources = new List<ImageSource>();
+            List<Tuple<Rect, ImageSource>> storyboardItems = new List<Tuple<Rect, ImageSource>>();
 
             foreach(UIElement element in storyboardCanvas.Children) {
                 StoryboardItem item = element as StoryboardItem;
 
                 if(item != null) {
+
                     Rect newRect = new Rect();
 
                     newRect.X = Canvas.GetLeft(item);
@@ -48,18 +47,16 @@ namespace issb
                     newRect.Width = item.ActualWidth;
                     newRect.Height = item.ActualHeight;
 
-                    storyboardItemRects.Add(newRect);
-                    
                     Image itemImage = (Image)item.Content;
 
-                    storyboardItemImageSources.Add(itemImage.Source);
+                    Tuple<Rect, ImageSource> newTuple = new Tuple<Rect, ImageSource>(newRect, itemImage.Source);
 
+                    storyboardItems.Add(newTuple);
 
                 }
             }
 
-            newDocument.StoryboardItemRects = storyboardItemRects;
-            newDocument.StoryboardItemImageSources = storyboardItemImageSources;
+            newDocument.StoryboardItems = storyboardItems;
 
             return newDocument;
         }
@@ -67,6 +64,15 @@ namespace issb
         public void UnloadOntoCanvas(StoryboardCanvas storyboardCanvas)
         {
 
+        }
+
+        ImageSource Base64StringToImageSource(string imageString)
+        {
+            byte[] bytes = Convert.FromBase64String(imageString);
+
+            using(MemoryStream stream = new MemoryStream(bytes)) {
+                return BitmapFrame.Create(stream);
+            }
         }
 
         public static StoryboardDocument LoadFromXML(FileStream fileStream)
@@ -78,9 +84,64 @@ namespace issb
             return newDocument;
         }
 
+        string ImageSourceToBase64String(ImageSource imageSource)
+        {
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+
+            // TODO: research if something can be done
+            BitmapFrame frame = BitmapFrame.Create(imageSource as BitmapSource);
+
+            encoder.Frames.Add(frame);
+
+            using(MemoryStream memoryStream = new MemoryStream()) {
+                encoder.Save(memoryStream);
+
+                return Convert.ToBase64String(memoryStream.ToArray());
+            }
+        }
+
         public void SaveToXML(FileStream fileStream)
         {
+            using(StreamWriter streamWriter = new StreamWriter(fileStream)) {
+                streamWriter.WriteLine("<?xml version='1.0'?>");
 
+                streamWriter.WriteLine("<StoryboardDocument>");
+
+                Template.WriteAsXml(streamWriter, false);
+
+                streamWriter.WriteLine("<StoryboarBackgrounds>");
+
+                foreach(ImageSource frameBackground in FrameBackgrounds) {
+                    if(frameBackground == null) {
+                        streamWriter.WriteLine("<StoryboarBackground />");
+                    }
+                    else {
+                        streamWriter.Write("<StoryboarBackground Content=\"");
+
+                        streamWriter.Write(ImageSourceToBase64String(frameBackground));
+
+                        streamWriter.WriteLine("\" />");
+                    }
+                }
+
+                streamWriter.WriteLine("</StoryboarBackgrounds>");
+
+                streamWriter.WriteLine("<StoryboardItems>");
+
+                foreach(Tuple<Rect, ImageSource> storyboardItem in StoryboardItems) {
+                    Rect itemRect = storyboardItem.Item1;
+
+                    streamWriter.Write($"<StoryboardItem X=\"{itemRect.X}\" Y=\"{itemRect.Y}\" Width=\"{itemRect.Width}\" Height=\"{itemRect.Height}\" Content=\"");
+
+                    streamWriter.Write(ImageSourceToBase64String(storyboardItem.Item2));
+
+                    streamWriter.WriteLine("\" />");
+                }
+
+                streamWriter.WriteLine("</StoryboardItems>");
+
+                streamWriter.WriteLine("</StoryboardDocument>");
+            }
         }
     }
 }

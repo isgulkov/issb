@@ -10,11 +10,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
-namespace issb {
+namespace issb
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
+    public partial class MainWindow : Window
+    {
         BackgroundManager CurrentBackgoundManager;
 
         List<BackgroundTemplate> CurrentTemplates = new List<BackgroundTemplate>();
@@ -38,7 +40,7 @@ namespace issb {
                 LoadBitmapImagesIntoItemsToolbox(presetLibrary.Items);
 
                 LoadBitmapImagesIntoBackgroundsToolbox(presetLibrary.Backgrounds);
-                
+
                 CurrentTemplates = CurrentTemplates.Concat(presetLibrary.Tempates).ToList();
             }
             catch(Exception ex) {
@@ -135,7 +137,7 @@ namespace issb {
             SaveFileDialog saveDialog = new SaveFileDialog();
 
             saveDialog.Filter = "Изображение в формате PNG (*.png)|*.png";
-            
+
             if(saveDialog.ShowDialog().Value) {
                 try {
                     SaveCanvasToPath(saveDialog.FileName);
@@ -176,7 +178,13 @@ namespace issb {
 
         private void SaveDocumentMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            StoryboardDocument.LoadFromCanvas(MainCanvas);
+            StoryboardDocument doc = StoryboardDocument.LoadFromCanvas(MainCanvas);
+
+            using(FileStream fileStream = new FileStream("pidor.xml", FileMode.Create)) {
+                doc.SaveToXML(fileStream);
+            }
+
+            MessageBox.Show("hey");
         }
     }
 }

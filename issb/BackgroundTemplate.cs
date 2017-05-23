@@ -72,12 +72,10 @@ namespace issb
         /// <summary>
         /// Записывает данный шаблон в переданный файл в XML-формате (см. ПЗ)
         /// </summary>
-        /// <param name="fileStream">Файл, в который предполагается записать шаблон</param>
+        /// <param name="fileStream">Поток, в который предполагается записать шаблон</param>
         /// <param name="includeHeader">Включить ли в вывод XML-заголовок (полезно, если нужно записать шаблон посреди файла)</param>
-        public void WriteAsXml(FileStream fileStream, bool includeHeader = true)
+        public void WriteAsXml(StreamWriter streamWriter, bool includeHeader = true)
         {
-            StreamWriter streamWriter = new StreamWriter(fileStream);
-
             if(includeHeader) {
                 streamWriter.WriteLine("<?xml version='1.0'?>");
             }
