@@ -59,6 +59,9 @@
     <Compile Include="Adorners\ResizeRotateChrome.cs" />
     <Compile Include="Adorners\MultipleSelectionAdorner.cs" />
     <Compile Include="BackgroundTemplate.cs" />
+    <Compile Include="Dialogs\ImportImagesDialog.xaml.cs">
+      <DependentUpon>ImportImagesDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\NewDocumentDialog.xaml.cs">
       <DependentUpon>NewDocumentDialog.xaml</DependentUpon>
     </Compile>
@@ -70,6 +73,10 @@
     <Compile Include="StoryboardItem.cs" />
     <Compile Include="Toolbox.cs" />
     <Compile Include="ToolboxItem.cs" />
+    <Page Include="Dialogs\ImportImagesDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\NewDocumentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

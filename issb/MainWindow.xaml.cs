@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 
 namespace issb {
     /// <summary>
@@ -19,11 +21,9 @@ namespace issb {
 
         protected override void OnContentRendered(EventArgs eventArgs)
         {
-            /*
-             * TODO: remove
-             */
-
             base.OnContentRendered(eventArgs);
+            
+            //CreateNewDocument();
         }
 
         private void NewDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
@@ -46,6 +46,26 @@ namespace issb {
 
                 CurrentBackgoundManager.InitializeCanvas(MainCanvas);
             }
+        }
+
+        private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+
+            openDialog.Multiselect = true;
+
+            if(openDialog.ShowDialog().Value) {
+                ImportImagesDialog importDialog = new ImportImagesDialog();
+
+                importDialog.FilesToImport = openDialog.FileNames;
+
+                importDialog.ShowDialog();
+            }
+        }
+
+        private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
