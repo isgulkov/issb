@@ -24,8 +24,21 @@ namespace issb {
         protected override void OnContentRendered(EventArgs eventArgs)
         {
             base.OnContentRendered(eventArgs);
-            
-            //CreateNewDocument();
+
+            try {
+                PresetLibrary presetLibrary = null;
+
+                using(FileStream fileStream = new FileStream(@"PresetLibraries\DefaultPresets.xml", FileMode.Open)) {
+                    presetLibrary = PresetLibrary.LoadFromXML(fileStream);
+                }
+
+                LoadBitmapImagesIntoItemsToolbox(presetLibrary.Items);
+
+                LoadBitmapImagesIntoBackgroundsToolbox(presetLibrary.Backgrounds);
+            }
+            catch(Exception ex) {
+                MessageBox.Show(this, $"Произошла ошибка при загрузке предустановленного контента\r\n\r\n{ex.Message}");
+            }
         }
 
         private void NewDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
@@ -86,19 +99,29 @@ namespace issb {
                 toolbox.Items.Add(newToolboxItem);
             }
         }
-        
+
+        void LoadBitmapImagesIntoItemsToolbox(IReadOnlyCollection<BitmapImage> bitmapImages)
+        {
+            LoadBitmapImagesIntoToolbox(bitmapImages, ItemsToolbox, ToolboxItem.ItemMode.StoryboardItem);
+        }
+
+        void LoadBitmapImagesIntoBackgroundsToolbox(IReadOnlyCollection<BitmapImage> bitmapImages)
+        {
+            LoadBitmapImagesIntoToolbox(bitmapImages, BackgroundsToolbox, ToolboxItem.ItemMode.StoryboardBackground);
+        }
+
         private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
             IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
-            LoadBitmapImagesIntoToolbox(bitmapImages, ItemsToolbox, ToolboxItem.ItemMode.StoryboardItem);
+            LoadBitmapImagesIntoItemsToolbox(bitmapImages);
         }
 
         private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs e)
         {
             IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
-            LoadBitmapImagesIntoToolbox(bitmapImages, BackgroundsToolbox, ToolboxItem.ItemMode.StoryboardBackground);
+            LoadBitmapImagesIntoBackgroundsToolbox(bitmapImages);
         }
     }
 }
