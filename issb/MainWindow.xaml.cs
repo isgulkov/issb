@@ -21,6 +21,16 @@ namespace issb
 
         string _CurrentFilePath = null;
 
+        bool NoDocumentMode = true;
+
+        void DisableNoDocumentMode()
+        {
+            NoDocumentMode = false;
+
+            SaveDocumentMenuItem.IsEnabled = true;
+            SaveDocumentAsMenuItem.IsEnabled = true;
+        }
+
         string CurrentFilePath
         {
             get
@@ -89,6 +99,10 @@ namespace issb
                 BackgroundManager backgoundManager = new BackgroundManager(newDocumentDialog.SelectedTemplate);
 
                 backgoundManager.InitializeCanvas(MainCanvas);
+
+                if(NoDocumentMode) {
+                    DisableNoDocumentMode();
+                }
             }
         }
 
@@ -223,11 +237,19 @@ namespace issb
                 newDocument.UnloadOntoCanvas(MainCanvas);
 
                 CurrentFilePath = filePath;
+
+                if(NoDocumentMode) {
+                    DisableNoDocumentMode();
+                }
             }
         }
 
         private void SaveDocumentMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            if(NoDocumentMode) {
+                return;
+            }
+
             if(CurrentFilePath == null) {
                 SaveDocumentAs();
             }
@@ -236,8 +258,12 @@ namespace issb
             }
         }
 
-        private void SaveDocumentAsMenuItem_Click_1(object sender, RoutedEventArgs eventArgs)
+        private void SaveDocumentAsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
+            if(NoDocumentMode) {
+                return;
+            }
+
             SaveDocumentAs();
         }
 

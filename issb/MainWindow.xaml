@@ -13,8 +13,8 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="_Новый" Click="NewDocumentMenuItem_Click"/>
                 <MenuItem Header="_Открыть" Click="OpenDocumentMenuItem_Click" />
-                <MenuItem Header="_Сохранить" Click="SaveDocumentMenuItem_Click" />
-                <MenuItem Header="Сохранить _как..." Click="SaveDocumentAsMenuItem_Click_1" />
+                <MenuItem Header="_Сохранить" Click="SaveDocumentMenuItem_Click" IsEnabled="False" Name="SaveDocumentMenuItem" />
+                <MenuItem Header="Сохранить _как..." Click="SaveDocumentAsMenuItem_Click" IsEnabled="False" Name="SaveDocumentAsMenuItem" />
                 <Separator />
                 <MenuItem Header="Импорт">
                     <MenuItem Header="Персонажи..." Click="ImportItemsMenuItem_Click"/>
@@ -34,29 +34,14 @@
                 <TabItem Header="Персонажи">
                     <sb:Toolbox x:Name="ItemsToolbox" Background="LightCyan">
                         <ItemsControl.Items>
-                            <sb:ToolboxItem Mode="StoryboardItem">
-                                <Ellipse Fill="Green" IsHitTestVisible="False" />
-                            </sb:ToolboxItem>
-                            <sb:ToolboxItem Mode="StoryboardItem">
-                                <Image>
-                                    <Image.Source>
-                                        <BitmapImage UriSource="C:\Users\Public\Pictures\Sample Pictures\Desert.jpg"/>
-                                    </Image.Source>
-                                </Image>
-                            </sb:ToolboxItem>
+                            <!-- Populated programmatically -->
                         </ItemsControl.Items>
                     </sb:Toolbox>
                 </TabItem>
                 <TabItem Header="Фон">
                     <sb:Toolbox x:Name="BackgroundsToolbox" Background="LightCyan">
                         <ItemsControl.Items>
-                            <sb:ToolboxItem Mode="StoryboardBackground">
-                                <Image>
-                                    <Image.Source>
-                                        <BitmapImage UriSource="C:\Users\Public\Pictures\Sample Pictures\Tulips.jpg"/>
-                                    </Image.Source>
-                                </Image>
-                            </sb:ToolboxItem>
+                            <!-- Populated programmatically -->
                         </ItemsControl.Items>
                     </sb:Toolbox>
                 </TabItem>
@@ -64,22 +49,9 @@
             <ScrollViewer Name="StoryboardScrollViewer"
                       Background="LightGray" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <sb:StoryboardCanvas x:Name="MainCanvas" Margin="2"
-                                 HorizontalAlignment="Left" VerticalAlignment="Top" Height="500" Width="500"
+                                 HorizontalAlignment="Left" VerticalAlignment="Top" Height="0" Width="0"
                                  AllowDrop="True" Background="White">
-                    <sb:StoryboardItem x:Name="DesignerItem1"
-                            Width="100"
-                            Height="100"
-                            Canvas.Top="100"
-                            Canvas.Left="100">
-                        <Ellipse Fill="Blue" IsHitTestVisible="False"/>
-                    </sb:StoryboardItem>
-                    <sb:StoryboardItem x:Name="DesignerItem2"
-                            Width="100"
-                            Height="100"
-                            Canvas.Top="100"
-                            Canvas.Left="250">
-                        <Rectangle Fill="Red" IsHitTestVisible="False"/>
-                    </sb:StoryboardItem>
+                    <!-- Populated programmatically -->
                 </sb:StoryboardCanvas>
             </ScrollViewer>
         </DockPanel>
