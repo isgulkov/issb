@@ -8,15 +8,21 @@ using Microsoft.Win32;
 
 namespace issb
 {
+    /// <summary>
+    /// Описывает поведение диалогового окна создания нового документа
+    /// </summary>
     public partial class NewDocumentDialog : Window
     {
         BackgroundTemplate _SelectedTemplate;
 
         /// <summary>
-        /// Передаваемый диалоговому окну набор шаблонов фона раскадровки
+        /// Передаваемый диалоговому окну набор шаблонов фона раскадровки для отображения в соответствующем выпадающем списке или т.п.
         /// </summary>
         public IReadOnlyCollection<BackgroundTemplate> PresetTemplates { get; set; }
 
+        /// <summary>
+        /// Выбранный шаблон фона, возвращаемый диалоговым окном. В случае нажатия пользователем кнопки "Отмена", значение данного поля остается null
+        /// </summary>
         public BackgroundTemplate SelectedTemplate
         {
             get
@@ -35,6 +41,11 @@ namespace issb
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Обрабатывает нажатие пользователем кнопки "Создать", записывает выбранный пользователем шаблон в поле <see cref="SelectedTemplate"/>. В случае успешного завершения данной операции окно закрыватеся
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void CreateButton_Click(object sender, RoutedEventArgs eventArgs)
         {
             if(Radio1.IsChecked.Value) {
@@ -53,11 +64,21 @@ namespace issb
 
         }
 
+        /// <summary>
+        /// Обрабатывает нажатие пользователем кнопки "Отмена", закрывает окно
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void CancelButtonClick(object sender, RoutedEventArgs eventArgs)
         {
             Close();
         }
 
+        /// <summary>
+        /// Открывает диалоговое окно открытия файла, выбранный пользователем файл записывает в соотствующий элемент <see cref="TextBox"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void BrowseButtonClick(object sender, RoutedEventArgs eventArgs)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -70,6 +91,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Инициализирует выпадающий список шаблона переданным данному окну в поле <see cref="PresetTemplates"/> набором щаблонов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void Window_Loaded(object sender, RoutedEventArgs eventArgs)
         {
             if(PresetTemplates != null) {
