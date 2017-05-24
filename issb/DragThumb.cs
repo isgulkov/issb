@@ -9,7 +9,6 @@ namespace issb
     public class DragThumb : Thumb
     {
         StoryboardItem CurrentItem;
-        RotateTransform CurrentTransForm;
         StoryboardCanvas CurrentCanvas;
 
         private void DragThumb_DragStarted(object sender, DragStartedEventArgs eventArgs)
@@ -18,7 +17,6 @@ namespace issb
 
             if(CurrentItem != null) {
                 CurrentCanvas = VisualTreeHelper.GetParent(CurrentItem) as StoryboardCanvas;
-                CurrentTransForm = CurrentItem.RenderTransform as RotateTransform;
             }
         }
 
@@ -38,13 +36,17 @@ namespace issb
 
                 Point dragDelta = new Point(dHorizontal, dVertical);
 
-                if(CurrentTransForm != null) {
-                    dragDelta = CurrentTransForm.Transform(dragDelta);
-                }
-
                 foreach(StoryboardItem item in CurrentCanvas.SelectedItems) {
-                    Canvas.SetLeft(item, Canvas.GetLeft(item) + dragDelta.X);
-                    Canvas.SetTop(item, Canvas.GetTop(item) + dragDelta.Y);
+                    Point itemDragDelta = dragDelta;
+
+                    RotateTransform itemTransform = item.RenderTransform as RotateTransform;
+
+                    if(itemTransform != null) {
+                        itemTransform.Transform(dragDelta);
+                    }
+
+                    Canvas.SetLeft(item, Canvas.GetLeft(item) + itemDragDelta.X);
+                    Canvas.SetTop(item, Canvas.GetTop(item) + itemDragDelta.Y);
                 }
 
                 eventArgs.Handled = true;
