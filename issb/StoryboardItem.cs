@@ -6,8 +6,14 @@ using System.Windows.Media;
 
 namespace issb
 {
+    /// <summary>
+    /// Представляет собой элемент раскадровки, который можно размещать на рабочем холсте
+    /// </summary>
     public class StoryboardItem : ContentControl
     {
+        /// <summary>
+        /// Выделен ли данный элемент
+        /// </summary>
         public bool IsSelected
         {
             get { return (bool)GetValue(IsSelectedProperty); }
@@ -20,6 +26,7 @@ namespace issb
         public static readonly DependencyProperty DragThumbTemplateProperty =
             DependencyProperty.RegisterAttached("DragThumbTemplate", typeof(ControlTemplate), typeof(StoryboardItem));
 
+        
         public static ControlTemplate GetDragThumbTemplate(UIElement element)
         {
             return (ControlTemplate)element.GetValue(DragThumbTemplateProperty);
@@ -32,16 +39,20 @@ namespace issb
 
         static StoryboardItem()
         {
-            FrameworkElement.DefaultStyleKeyProperty.OverrideMetadata(typeof(StoryboardItem), new FrameworkPropertyMetadata(typeof(StoryboardItem)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(StoryboardItem), new FrameworkPropertyMetadata(typeof(StoryboardItem)));
         }
 
         public StoryboardItem()
         {
-            Loaded += new RoutedEventHandler(DesignerItem_Loaded);
+            Loaded += new RoutedEventHandler(StoryboardItem_Loaded);
 
             Panel.SetZIndex(this, int.MinValue + 1);
         }
 
+        /// <summary>
+        /// Обрабатывает событие нажатия мыши на данном элементе раскадровки с целью поддержки множественного выделения элементов раскадровки
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnPreviewMouseDown(MouseButtonEventArgs eventArgs)
         {
             base.OnPreviewMouseDown(eventArgs);
@@ -62,7 +73,12 @@ namespace issb
             eventArgs.Handled = false;
         }
 
-        private void DesignerItem_Loaded(object sender, RoutedEventArgs eventArgs)
+        /// <summary>
+        /// Устанавливает для данного элемента раскадровки шаблон, добавляющий к нему элемент управления <see cref="DragThumb"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        private void StoryboardItem_Loaded(object sender, RoutedEventArgs eventArgs)
         {
             if(Template != null) {
                 ContentPresenter contentPresenter =
@@ -86,6 +102,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Обрабатывает двойной щелчок мыши по данном элементу, перемещая его на холсте на передний план
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnMouseDoubleClick(MouseButtonEventArgs eventArgs)
         {
             base.OnMouseDoubleClick(eventArgs);
