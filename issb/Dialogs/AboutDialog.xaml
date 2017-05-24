@@ -27,6 +27,6 @@
                 </TextBlock>
             </StackPanel>
         </StackPanel>
-        <Button Content="ОК" Padding="20,0" Margin="0,0,0,10" HorizontalAlignment="Center" Click="Button_Click"/>
+        <Button Content="ОК" Padding="20,0" Margin="0,0,0,10" HorizontalAlignment="Center" Click="Button_Click" IsDefault="True" IsCancel="True"/>
     </StackPanel>
 </Window>

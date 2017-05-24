@@ -35,7 +35,7 @@ namespace issb
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs eventArgs)
+        private void CreateButton_Click(object sender, RoutedEventArgs eventArgs)
         {
             if(Radio1.IsChecked.Value) {
                 SelectedTemplate = PresetTemplates.ElementAt(TemplatesComboBox.SelectedIndex);

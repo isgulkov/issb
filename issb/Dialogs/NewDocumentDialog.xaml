@@ -53,8 +53,8 @@
             <Separator/>
 
             <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="5">
-                <Button Content="Отмена" Click="CancelButtonClick" />
-                <Button Content="Создать" Click="Button_Click" />
+                <Button Content="Отмена" Click="CancelButtonClick" IsCancel="True" />
+                <Button Content="Создать" Click="CreateButton_Click" IsDefault="True" />
             </StackPanel>
         </StackPanel>
     </Border>
