@@ -145,6 +145,9 @@
   <ItemGroup>
     <Resource Include="BackgroundTemplates\template01.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\program_logo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(ProjectDir)BackgroundTemplates\* $(ProjectDir)$(OutDir)BackgroundTemplates\ /Y

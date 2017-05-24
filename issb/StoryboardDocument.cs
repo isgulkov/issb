@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
-
 
 namespace issb
 {
@@ -39,17 +39,16 @@ namespace issb
                 StoryboardItem item = element as StoryboardItem;
 
                 if(item != null) {
+                    Rect itemRect = new Rect();
 
-                    Rect newRect = new Rect();
+                    itemRect.X = Canvas.GetLeft(item);
+                    itemRect.Y = Canvas.GetTop(item);
+                    itemRect.Width = item.ActualWidth;
+                    itemRect.Height = item.ActualHeight;
 
-                    newRect.X = Canvas.GetLeft(item);
-                    newRect.Y = Canvas.GetTop(item);
-                    newRect.Width = item.ActualWidth;
-                    newRect.Height = item.ActualHeight;
+                    Image itemImageSource = (Image)item.Content;
 
-                    Image itemImage = (Image)item.Content;
-
-                    Tuple<Rect, ImageSource> newTuple = new Tuple<Rect, ImageSource>(newRect, itemImage.Source);
+                    Tuple<Rect, ImageSource> newTuple = new Tuple<Rect, ImageSource>(itemRect, itemImageSource.Source);
 
                     storyboardItems.Add(newTuple);
 
@@ -63,15 +62,52 @@ namespace issb
 
         public void UnloadOntoCanvas(StoryboardCanvas storyboardCanvas)
         {
+            storyboardCanvas.Children.Clear();
 
+            BackgroundManager backgoundManager = new BackgroundManager(Template);
+
+            backgoundManager.InitializeCanvas(storyboardCanvas);
+
+            for(int i = 0; i < Template.NumFrames; i++) {
+                if(FrameBackgrounds[i] != null) {
+                    backgoundManager.AddImageToFrame(i, FrameBackgrounds[i]);
+                }
+            }
+
+            foreach(Tuple<Rect, ImageSource> storyboardItem in StoryboardItems) {
+                Image newImage = new Image();
+
+                newImage.Source = storyboardItem.Item2;
+                newImage.IsHitTestVisible = false;
+
+                StoryboardItem newItem = new StoryboardItem();
+
+                newItem.Content = newImage;
+
+                Rect itemRect = storyboardItem.Item1;
+
+                newItem.Width = itemRect.Width;
+                newItem.Height = itemRect.Height;
+
+                Canvas.SetLeft(newItem, itemRect.X);
+                Canvas.SetTop(newItem, itemRect.Y);
+
+                storyboardCanvas.Children.Add(newItem);
+            }
         }
 
-        ImageSource Base64StringToImageSource(string imageString)
+        static BitmapImage Base64StringToImageSource(string imageString)
         {
             byte[] bytes = Convert.FromBase64String(imageString);
 
             using(MemoryStream stream = new MemoryStream(bytes)) {
-                return BitmapFrame.Create(stream);
+                BitmapImage bitmapImage = new BitmapImage();
+
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = new MemoryStream(stream.ToArray());
+                bitmapImage.EndInit();
+
+                return bitmapImage;
             }
         }
 
@@ -79,16 +115,62 @@ namespace issb
         {
             StoryboardDocument newDocument = new StoryboardDocument();
 
-            //
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(fileStream);
+
+            XmlNode templateNode = xmlDoc.GetElementsByTagName("BackgroundTemplate")[0];
+
+            newDocument.Template = BackgroundTemplate.ReadFromXML(templateNode.OuterXml);
+
+            List<ImageSource> frameBackgrounds = new List<ImageSource>();
+
+            foreach(XmlNode backgroundNode in xmlDoc.GetElementsByTagName("StoryboardBackground")) {
+                XmlAttribute contentAttr = backgroundNode.Attributes["Content"];
+
+                if(contentAttr == null) {
+                    frameBackgrounds.Add(null);
+                }
+                else {
+                    frameBackgrounds.Add(Base64StringToImageSource(contentAttr.Value));
+                }
+            }
+
+            newDocument.FrameBackgrounds = frameBackgrounds;
+
+            List<Tuple<Rect, ImageSource>> storyboardItems = new List<Tuple<Rect, ImageSource>>();
+
+            foreach(XmlNode itemNode in xmlDoc.GetElementsByTagName("StoryboardItem")) {
+                Rect itemRect = new Rect();
+
+                itemRect.X = double.Parse(itemNode.Attributes["X"].Value);
+                itemRect.Y = double.Parse(itemNode.Attributes["Y"].Value);
+                itemRect.Width = double.Parse(itemNode.Attributes["Width"].Value);
+                itemRect.Height = double.Parse(itemNode.Attributes["Height"].Value);
+
+                BitmapImage itemImageSource;
+
+                XmlAttribute contentAttr = itemNode.Attributes["Content"];
+
+                if(contentAttr == null) {
+                    itemImageSource = null;
+                }
+                else {
+                    itemImageSource = Base64StringToImageSource(contentAttr.Value);
+                }
+
+                storyboardItems.Add(new Tuple<Rect, ImageSource>(itemRect, itemImageSource));
+            }
+
+            newDocument.StoryboardItems = storyboardItems;
 
             return newDocument;
         }
 
-        string ImageSourceToBase64String(ImageSource imageSource)
+        static string ImageSourceToBase64String(ImageSource imageSource)
         {
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
 
-            // TODO: research if something can be done
+            // TODO: research if anything can be done about the types
             BitmapFrame frame = BitmapFrame.Create(imageSource as BitmapSource);
 
             encoder.Frames.Add(frame);
@@ -109,14 +191,14 @@ namespace issb
 
                 Template.WriteAsXml(streamWriter, false);
 
-                streamWriter.WriteLine("<StoryboarBackgrounds>");
+                streamWriter.WriteLine("<StoryboardBackgrounds>");
 
                 foreach(ImageSource frameBackground in FrameBackgrounds) {
                     if(frameBackground == null) {
-                        streamWriter.WriteLine("<StoryboarBackground />");
+                        streamWriter.WriteLine("<StoryboardBackground />");
                     }
                     else {
-                        streamWriter.Write("<StoryboarBackground Content=\"");
+                        streamWriter.Write("<StoryboardBackground Content=\"");
 
                         streamWriter.Write(ImageSourceToBase64String(frameBackground));
 
@@ -124,18 +206,26 @@ namespace issb
                     }
                 }
 
-                streamWriter.WriteLine("</StoryboarBackgrounds>");
+                streamWriter.WriteLine("</StoryboardBackgrounds>");
 
                 streamWriter.WriteLine("<StoryboardItems>");
 
                 foreach(Tuple<Rect, ImageSource> storyboardItem in StoryboardItems) {
                     Rect itemRect = storyboardItem.Item1;
 
-                    streamWriter.Write($"<StoryboardItem X=\"{itemRect.X}\" Y=\"{itemRect.Y}\" Width=\"{itemRect.Width}\" Height=\"{itemRect.Height}\" Content=\"");
+                    streamWriter.Write($"<StoryboardItem X=\"{itemRect.X}\" Y=\"{itemRect.Y}\" Width=\"{itemRect.Width}\" Height=\"{itemRect.Height}\"");
 
-                    streamWriter.Write(ImageSourceToBase64String(storyboardItem.Item2));
+                    ImageSource itemImage = storyboardItem.Item2;
 
-                    streamWriter.WriteLine("\" />");
+                    if(itemImage != null) {
+                        streamWriter.Write(" Content=\"");
+
+                        streamWriter.Write(ImageSourceToBase64String(itemImage));
+
+                        streamWriter.Write("\"");
+                    }
+
+                    streamWriter.WriteLine("/>");
                 }
 
                 streamWriter.WriteLine("</StoryboardItems>");

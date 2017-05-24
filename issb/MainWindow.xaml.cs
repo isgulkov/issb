@@ -17,8 +17,6 @@ namespace issb
     /// </summary>
     public partial class MainWindow : Window
     {
-        BackgroundManager CurrentBackgoundManager;
-
         List<BackgroundTemplate> CurrentTemplates = new List<BackgroundTemplate>();
 
         string _CurrentFilePath = null;
@@ -88,9 +86,9 @@ namespace issb
 
                 MainCanvas.Children.Clear();
 
-                CurrentBackgoundManager = new BackgroundManager(newDocumentDialog.SelectedTemplate);
+                BackgroundManager backgoundManager = new BackgroundManager(newDocumentDialog.SelectedTemplate);
 
-                CurrentBackgoundManager.InitializeCanvas(MainCanvas);
+                backgoundManager.InitializeCanvas(MainCanvas);
             }
         }
 
@@ -202,7 +200,30 @@ namespace issb
 
         private void OpenDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
-            
+            OpenFileDialog openDialog = new OpenFileDialog();
+
+            openDialog.Filter = "XML-формат видеораскадровки (*.sb)|*.sb";
+
+            if(openDialog.ShowDialog().Value) {
+                try {
+                    OpenDocument(openDialog.FileName);
+                }
+                finally { }
+                //catch(Exception ex) {
+                //    MessageBox.Show(this, $"При попытке открытия файла произошла ошибка\r\n\r\n{ex.Message}");
+                //}
+            }
+        }
+
+        void OpenDocument(string filePath)
+        {
+            using(FileStream fileStream = new FileStream(filePath, FileMode.Open)) {
+                StoryboardDocument newDocument = StoryboardDocument.LoadFromXML(fileStream);
+
+                newDocument.UnloadOntoCanvas(MainCanvas);
+
+                CurrentFilePath = filePath;
+            }
         }
 
         private void SaveDocumentMenuItem_Click(object sender, RoutedEventArgs e)
@@ -229,9 +250,10 @@ namespace issb
                     document.SaveToXML(fileStream);
                 }
             }
-            catch(Exception ex) {
-                MessageBox.Show(this, $"Сохранить документ не удалось\r\n\r\n{ex.Message}");
-            }
+            finally { }
+            //catch(Exception ex) {
+            //    MessageBox.Show(this, $"При попытке сохранения файла произошла ошибка\r\n\r\n{ex.Message}");
+            //}
         }
 
         void SaveDocumentAs()

@@ -35,13 +35,31 @@ namespace issb
         /// Считывает шаблон из переданного файла в XML-формате (см. ПЗ)
         /// </summary>
         /// <param name="fileStream">Поток, содержащий доступный для чтения файл в XML-формате (см. ПЗ)</param>
-        /// <returns>Вновь считанный из файла объект-шаблон</returns>
+        /// <returns>Вновь считанный из файла шаблон</returns>
         public static BackgroundTemplate ReadFromXML(FileStream fileStream)
         {
-            BackgroundTemplate newTemplate = new BackgroundTemplate();
-
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(fileStream);
+
+            return ReadFromXMLDocument(xmlDoc);
+        }
+
+        /// <summary>
+        /// Считывает шаблон из переданной строки в XML-формате (см. ПЗ)
+        /// </summary>
+        /// <param name="xmlString">Строка, содержащая представление шабона в XML-формате (см. ПЗ)</param>
+        /// <returns>Вновь считанный из строки шаблон</returns>
+        public static BackgroundTemplate ReadFromXML(string xmlString)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlString);
+
+            return ReadFromXMLDocument(xmlDoc);
+        }
+
+        static BackgroundTemplate ReadFromXMLDocument(XmlDocument xmlDoc)
+        {
+            BackgroundTemplate newTemplate = new BackgroundTemplate();
 
             XmlNode rootNode = xmlDoc.GetElementsByTagName("BackgroundTemplate")[0];
 
