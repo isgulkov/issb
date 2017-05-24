@@ -14,10 +14,13 @@
                 <TextBlock TextWrapping="NoWrap" TextAlignment="Center" FontSize="16" FontWeight="Bold">
                     Программа для создания видеораскадровки
                 </TextBlock>
-                <TextBlock TextWrapping="Wrap" TextAlignment="Center" Margin="0,5" FontSize="14">
+                <TextBlock TextAlignment="Center" FontSize="12" FontWeight="Bold">
+                    Курсовая работа, 1 курс
+                </TextBlock>
+                <TextBlock TextAlignment="Center" Margin="0,8" FontSize="14">
                     Гульков И.
                 </TextBlock>
-                <TextBlock TextWrapping="Wrap" TextAlignment="Center" FontSize="12" Margin="0,5,0,0">
+                <TextBlock TextAlignment="Center" FontSize="12" Margin="0,5,0,0">
                     БПИ153<LineBreak/>
                     НИУ ВШЭ<LineBreak/>
                     2017<LineBreak/>
