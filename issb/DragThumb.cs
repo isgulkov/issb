@@ -6,6 +6,9 @@ using System.Windows.Media;
 
 namespace issb
 {
+    /// <summary>
+    /// Представляет собой элемент управления, предназначенный для перемещения элемента раскадровки
+    /// </summary>
     public class DragThumb : Thumb
     {
         /// <summary>
