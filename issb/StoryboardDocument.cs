@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -40,7 +41,11 @@ namespace issb
 
             List<ItemTuple> storyboardItems = new List<ItemTuple>();
 
-            foreach(UIElement element in storyboardCanvas.Children) {
+            UIElement[] storyboardCanvasChildren = new UIElement[storyboardCanvas.Children.Count];
+
+            storyboardCanvas.Children.CopyTo(storyboardCanvasChildren, 0);
+
+            foreach(UIElement element in storyboardCanvasChildren.OrderBy(x => Panel.GetZIndex(x))) {
                 StoryboardItem item = element as StoryboardItem;
 
                 if(item != null) {
@@ -62,7 +67,6 @@ namespace issb
                     ItemTuple newTuple = new ItemTuple(itemRect, itemTransform, itemImageSource.Source);
 
                     storyboardItems.Add(newTuple);
-
                 }
             }
 
