@@ -15,7 +15,12 @@ namespace issb
 
         List<ImageSource> FrameBackgrounds;
 
-        List<Tuple<Rect, ImageSource>> StoryboardItems;
+        class ItemTuple : Tuple<Rect, RotateTransform, ImageSource>
+        {
+            public ItemTuple(Rect rect, RotateTransform rotateTransform, ImageSource imageSource) : base(rect, rotateTransform, imageSource) { }
+        }
+
+        List<ItemTuple> StoryboardItems;
 
         StoryboardDocument() { }
 
@@ -33,12 +38,16 @@ namespace issb
 
             newDocument.FrameBackgrounds = frameBackgrounds;
 
-            List<Tuple<Rect, ImageSource>> storyboardItems = new List<Tuple<Rect, ImageSource>>();
+            List<ItemTuple> storyboardItems = new List<ItemTuple>();
 
             foreach(UIElement element in storyboardCanvas.Children) {
                 StoryboardItem item = element as StoryboardItem;
 
                 if(item != null) {
+                    RotateTransform itemTransform = item.RenderTransform as RotateTransform;
+                
+                    item.RenderTransform = null;
+
                     Rect itemRect = new Rect();
 
                     itemRect.X = Canvas.GetLeft(item);
@@ -46,9 +55,11 @@ namespace issb
                     itemRect.Width = item.ActualWidth;
                     itemRect.Height = item.ActualHeight;
 
+                    item.RenderTransform = itemTransform;
+
                     Image itemImageSource = (Image)item.Content;
 
-                    Tuple<Rect, ImageSource> newTuple = new Tuple<Rect, ImageSource>(itemRect, itemImageSource.Source);
+                    ItemTuple newTuple = new ItemTuple(itemRect, itemTransform, itemImageSource.Source);
 
                     storyboardItems.Add(newTuple);
 
@@ -74,23 +85,25 @@ namespace issb
                 }
             }
 
-            foreach(Tuple<Rect, ImageSource> storyboardItem in StoryboardItems) {
+            foreach(ItemTuple itemTuple in StoryboardItems) {
                 Image newImage = new Image();
 
-                newImage.Source = storyboardItem.Item2;
+                newImage.Source = itemTuple.Item3;
                 newImage.IsHitTestVisible = false;
 
                 StoryboardItem newItem = new StoryboardItem();
 
                 newItem.Content = newImage;
 
-                Rect itemRect = storyboardItem.Item1;
+                Rect itemRect = itemTuple.Item1;
 
                 newItem.Width = itemRect.Width;
                 newItem.Height = itemRect.Height;
 
                 Canvas.SetLeft(newItem, itemRect.X);
                 Canvas.SetTop(newItem, itemRect.Y);
+
+                newItem.RenderTransform = itemTuple.Item2;
 
                 storyboardCanvas.Children.Add(newItem);
             }
@@ -137,7 +150,7 @@ namespace issb
 
             newDocument.FrameBackgrounds = frameBackgrounds;
 
-            List<Tuple<Rect, ImageSource>> storyboardItems = new List<Tuple<Rect, ImageSource>>();
+            List<ItemTuple> storyboardItems = new List<ItemTuple>();
 
             foreach(XmlNode itemNode in xmlDoc.GetElementsByTagName("StoryboardItem")) {
                 Rect itemRect = new Rect();
@@ -158,7 +171,15 @@ namespace issb
                     itemImageSource = Base64StringToImageSource(contentAttr.Value);
                 }
 
-                storyboardItems.Add(new Tuple<Rect, ImageSource>(itemRect, itemImageSource));
+                RotateTransform itemTransform = new RotateTransform();
+
+                XmlAttribute angleAttr = itemNode.Attributes["Angle"];
+
+                if(angleAttr != null) {
+                    itemTransform.Angle = double.Parse(angleAttr.Value);
+                }
+
+                storyboardItems.Add(new ItemTuple(itemRect, itemTransform, itemImageSource));
             }
 
             newDocument.StoryboardItems = storyboardItems;
@@ -210,12 +231,18 @@ namespace issb
 
                 streamWriter.WriteLine("<StoryboardItems>");
 
-                foreach(Tuple<Rect, ImageSource> storyboardItem in StoryboardItems) {
+                foreach(ItemTuple storyboardItem in StoryboardItems) {
                     Rect itemRect = storyboardItem.Item1;
 
                     streamWriter.Write($"<StoryboardItem X=\"{itemRect.X}\" Y=\"{itemRect.Y}\" Width=\"{itemRect.Width}\" Height=\"{itemRect.Height}\"");
 
-                    ImageSource itemImage = storyboardItem.Item2;
+                    RotateTransform itemTransform = storyboardItem.Item2;
+
+                    if(itemTransform != null) {
+                        streamWriter.Write($" Angle=\"{itemTransform.Angle}\"");
+                    }
+
+                    ImageSource itemImage = storyboardItem.Item3;
 
                     if(itemImage != null) {
                         streamWriter.Write(" Content=\"");
