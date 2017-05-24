@@ -23,10 +23,10 @@
                 <MenuItem Header="Экспорт..." Click="ExportMenuItem_Click"/>
 
                 <Separator />
-                <MenuItem Header="_Выход" />
+                <MenuItem Header="_Выход" Click="ExitMenuItem_Click" />
             </MenuItem>
             <MenuItem Header="_Справка">
-                <MenuItem Header="О _программе" />
+                <MenuItem Header="О _программе" Click="AboutMenuItem_Click_1" />
             </MenuItem>
         </Menu>
         <DockPanel>

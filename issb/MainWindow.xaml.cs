@@ -268,5 +268,19 @@ namespace issb
                 SaveDocument(saveDialog.FileName);
             }
         }
+
+        private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void AboutMenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            AboutDialog aboutDialog = new AboutDialog();
+
+            aboutDialog.Owner = this;
+
+            aboutDialog.ShowDialog();
+        }
     }
 }
