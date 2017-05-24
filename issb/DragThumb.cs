@@ -8,9 +8,21 @@ namespace issb
 {
     public class DragThumb : Thumb
     {
+        /// <summary>
+        /// Элемент видеораскадровки, нажатием на который пользователь начал операцию перемещения. Запоминается для поддержки множественного перемещения выделенных элементов
+        /// </summary>
         StoryboardItem CurrentItem;
+
+        /// <summary>
+        /// Рабочий холст, на котором происходит операция перемещения. Запоминается для поддержки множественного перемещения выделенных элементов
+        /// </summary>
         StoryboardCanvas CurrentCanvas;
 
+        /// <summary>
+        /// Инициирует операцию перемещения путем запоминания в данном объекте элемента, который пользователь начал перетаскивать, и рабочего холста, на котором происходит операция перемещения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void DragThumb_DragStarted(object sender, DragStartedEventArgs eventArgs)
         {
             CurrentItem = DataContext as StoryboardItem;
@@ -20,6 +32,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Выполняет перемещение всех выделенных объектов в соответствии с движением указателя мыши
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void DragThumb_DragDelta(object sender, DragDeltaEventArgs eventArgs)
         {
             if(CurrentItem != null && CurrentCanvas != null && CurrentItem.IsSelected) {
