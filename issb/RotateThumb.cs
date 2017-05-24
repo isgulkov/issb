@@ -7,6 +7,9 @@ using System.Windows.Media;
 
 namespace issb
 {
+    /// <summary>
+    /// Элемент управления, предназначенный для вращения элемента раскадровки
+    /// </summary>
     public class RotateThumb : Thumb
     {
         private Canvas StoryboardCanvas;
@@ -23,6 +26,11 @@ namespace issb
             DragStarted += new DragStartedEventHandler(RotateThumb_DragStarted);
         }
 
+        /// <summary>
+        /// Запоминает начальный угол между центром элемента раскадровки и указателем мыши для последующего вращения элемента раскадровки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void RotateThumb_DragStarted(object sender, DragStartedEventArgs eventArgs)
         {
             StoryboardItem = DataContext as ContentControl;
@@ -51,6 +59,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Вращает элемент раскадровки при перетаскивании элемента управления мышью 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void RotateThumb_DragDelta(object sender, DragDeltaEventArgs eventArgs)
         {
             if(StoryboardItem != null && StoryboardCanvas != null) {
