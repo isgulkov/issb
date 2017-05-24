@@ -1,12 +1,25 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
 <Presets>
   <Items>
-    <Item Src="C:\Users\Public\Pictures\Sample Pictures\Tulips.jpg" />
+    <Item Src="ItemImages\full_moon_with_face.png" />
+    <Item Src="ItemImages\gyrocopter.png" />
+    <Item Src="ItemImages\lone_druid.png" />
+    <Item Src="ItemImages\naga_siren.png" />
+    <Item Src="ItemImages\troll_warlord.png" />
   </Items>
   <Backgrounds>
-    <Background Src="C:\Users\Public\Pictures\Sample Pictures\Desert.jpg" />
+    <Background Src="BackgroundImages\Chrysanthemum.jpg" />
+    <Background Src="BackgroundImages\Desert.jpg" />
+    <Background Src="BackgroundImages\Hydrangeas.jpg" />
+    <Background Src="BackgroundImages\Jellyfish.jpg" />
+    <Background Src="BackgroundImages\Koala.jpg" />
+    <Background Src="BackgroundImages\Lighthouse.jpg" />
+    <Background Src="BackgroundImages\Penguins.jpg" />
+    <Background Src="BackgroundImages\Tulips.jpg" />
   </Backgrounds>
   <Templates>
-    <Template Src="..\BackgroundTemplates\template01.xml" />
+    <Template Src="BackgroundTemplates\template01.xml" />
+    <Template Src="BackgroundTemplates\template02.xml" />
+    <Template Src="BackgroundTemplates\template03.xml" />
   </Templates>
 </Presets>
