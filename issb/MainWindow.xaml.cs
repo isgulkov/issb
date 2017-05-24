@@ -10,14 +10,35 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
-namespace issb {
+namespace issb
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        BackgroundManager CurrentBackgoundManager;
-
+    public partial class MainWindow : Window
+    {
         List<BackgroundTemplate> CurrentTemplates = new List<BackgroundTemplate>();
+
+        string _CurrentFilePath = null;
+
+        string CurrentFilePath
+        {
+            get
+            {
+                return _CurrentFilePath;
+            }
+            set
+            {
+                _CurrentFilePath = value;
+
+                if(string.IsNullOrEmpty(value)) {
+                    Title = "issb";
+                }
+                else {
+                    Title = $"{Path.GetFileName(value)} — issb";
+                }
+            }
+        }
 
         public MainWindow()
         {
@@ -38,7 +59,7 @@ namespace issb {
                 LoadBitmapImagesIntoItemsToolbox(presetLibrary.Items);
 
                 LoadBitmapImagesIntoBackgroundsToolbox(presetLibrary.Backgrounds);
-                
+
                 CurrentTemplates = CurrentTemplates.Concat(presetLibrary.Tempates).ToList();
             }
             catch(Exception ex) {
@@ -61,11 +82,13 @@ namespace issb {
             newDocumentDialog.ShowDialog();
 
             if(newDocumentDialog.SelectedTemplate != null) {
+                CurrentFilePath = null;
+
                 MainCanvas.Children.Clear();
 
-                CurrentBackgoundManager = new BackgroundManager(newDocumentDialog.SelectedTemplate);
+                BackgroundManager backgoundManager = new BackgroundManager(newDocumentDialog.SelectedTemplate);
 
-                CurrentBackgoundManager.InitializeCanvas(MainCanvas);
+                backgoundManager.InitializeCanvas(MainCanvas);
             }
         }
 
@@ -98,6 +121,7 @@ namespace issb {
                 Image newImage = new Image();
 
                 newImage.Source = bitmapImage;
+                newImage.IsHitTestVisible = false;
 
                 newToolboxItem.Content = newImage;
                 newToolboxItem.Mode = itemMode;
@@ -135,7 +159,7 @@ namespace issb {
             SaveFileDialog saveDialog = new SaveFileDialog();
 
             saveDialog.Filter = "Изображение в формате PNG (*.png)|*.png";
-            
+
             if(saveDialog.ShowDialog().Value) {
                 try {
                     SaveCanvasToPath(saveDialog.FileName);
@@ -171,6 +195,77 @@ namespace issb {
                 encoder.Frames.Add(BitmapFrame.Create(writableBitmap));
 
                 encoder.Save(fileStream);
+            }
+        }
+
+        private void OpenDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+
+            openDialog.Filter = "XML-формат видеораскадровки (*.sb)|*.sb";
+
+            if(openDialog.ShowDialog().Value) {
+                try {
+                    OpenDocument(openDialog.FileName);
+                }
+                finally { }
+                //catch(Exception ex) {
+                //    MessageBox.Show(this, $"При попытке открытия файла произошла ошибка\r\n\r\n{ex.Message}");
+                //}
+            }
+        }
+
+        void OpenDocument(string filePath)
+        {
+            using(FileStream fileStream = new FileStream(filePath, FileMode.Open)) {
+                StoryboardDocument newDocument = StoryboardDocument.LoadFromXML(fileStream);
+
+                newDocument.UnloadOntoCanvas(MainCanvas);
+
+                CurrentFilePath = filePath;
+            }
+        }
+
+        private void SaveDocumentMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if(CurrentFilePath == null) {
+                SaveDocumentAs();
+            }
+            else {
+                SaveDocument(CurrentFilePath);
+            }
+        }
+
+        private void SaveDocumentAsMenuItem_Click_1(object sender, RoutedEventArgs eventArgs)
+        {
+            SaveDocumentAs();
+        }
+
+        void SaveDocument(string filePath)
+        {
+            StoryboardDocument document = StoryboardDocument.LoadFromCanvas(MainCanvas);
+
+            try {
+                using(FileStream fileStream = new FileStream(filePath, FileMode.Create)) {
+                    document.SaveToXML(fileStream);
+                }
+            }
+            finally { }
+            //catch(Exception ex) {
+            //    MessageBox.Show(this, $"При попытке сохранения файла произошла ошибка\r\n\r\n{ex.Message}");
+            //}
+        }
+
+        void SaveDocumentAs()
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+
+            saveDialog.Filter = "XML-формат видеораскадровки (*.sb)|*.sb";
+
+            if(saveDialog.ShowDialog().Value) {
+                CurrentFilePath = saveDialog.FileName;
+
+                SaveDocument(saveDialog.FileName);
             }
         }
     }

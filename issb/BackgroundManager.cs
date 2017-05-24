@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace issb
 {
@@ -13,7 +14,7 @@ namespace issb
     /// </summary>
     public class BackgroundManager
     {
-        BackgroundTemplate CurrentTempalte;
+        public BackgroundTemplate CurrentTempalte { get; private set; }
         List<Image> FrameBackgrounds;
 
         public BackgroundManager(BackgroundTemplate backgroundTempalte)
@@ -71,14 +72,28 @@ namespace issb
         /// Устанавливают данное фоновое изображение для кадра с данным индексом
         /// </summary>
         /// <param name="frameIndex">Индекс кандра, для которого утсанавливается изображение</param>
-        /// <param name="bitmapImage">Изображение, которое устанавливается для данного кадра</param>
-        public void AddImageToFrame(int frameIndex, ImageSource bitmapImage)
+        /// <param name="imageSource">Изображение, которое устанавливается для данного кадра</param>
+        public void AddImageToFrame(int frameIndex, ImageSource imageSource)
         {
             if(frameIndex < 0 || frameIndex >= CurrentTempalte.NumFrames) {
                 throw new ArgumentOutOfRangeException($"Frame index {frameIndex} out of range ({CurrentTempalte.NumFrames} frames only)");
             }
 
-            FrameBackgrounds[frameIndex].Source = bitmapImage;
+            FrameBackgrounds[frameIndex].Source = imageSource;
+        }
+
+        /// <summary>
+        /// Возвращает объект ImageSource, установленный в качестве фонового изображения для кадра с заданным индексом
+        /// </summary>
+        /// <param name="frameIndex">Индекс кадра, для которого предполагается возвратить ImageSource, установленный в качестве его фонового изображения</param>
+        /// <returns>Объект ImageSource, установленный в качестве фонового изображения для кадра с заданным индексом. Если для данного кадра фоновое изображение установлено, возвращает null</returns>
+        public ImageSource GetImageOfFrame(int frameIndex)
+        {
+            if(frameIndex < 0 || frameIndex >= CurrentTempalte.NumFrames) {
+                throw new ArgumentOutOfRangeException($"Frame index {frameIndex} out of range ({CurrentTempalte.NumFrames} frames only)");
+            }
+
+            return FrameBackgrounds[frameIndex].Source;
         }
 
         /// <summary>
@@ -87,12 +102,12 @@ namespace issb
         /// Если таких кадров несколько (не рекомендуется) фон устанавливается для всех таких кадров. Если таких кадров не существует, не изменяется ничего
         /// </summary>
         /// <param name="point">Точка, в которой предположительно находится кадр, для которого предполагается установить фоновое изображение</param>
-        /// <param name="bitmapImage">Изображение, которое предполагается установить для кадра в данной точке</param>
-        public void AddImageAt(Point point, ImageSource bitmapImage)
+        /// <param name="imageSource">Изображение, которое предполагается установить для кадра в данной точке</param>
+        public void AddImageAt(Point point, ImageSource imageSource)
         {
             for(int i = 0; i < CurrentTempalte.NumFrames; i++) {
                 if(CurrentTempalte.FrameRects.ElementAt(i).Contains(point)) {
-                    AddImageToFrame(i, bitmapImage);
+                    AddImageToFrame(i, imageSource);
                 }
             }
         }

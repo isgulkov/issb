@@ -71,6 +71,7 @@
     <Compile Include="ResizeThumb.cs" />
     <Compile Include="BackgroundManager.cs" />
     <Compile Include="StoryboardCanvas.cs" />
+    <Compile Include="StoryboardDocument.cs" />
     <Compile Include="StoryboardItem.cs" />
     <Compile Include="Toolbox.cs" />
     <Compile Include="ToolboxItem.cs" />
@@ -143,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="BackgroundTemplates\template01.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\program_logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
