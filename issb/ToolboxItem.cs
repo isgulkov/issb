@@ -11,14 +11,20 @@ namespace issb
     /// </summary>
     public class ToolboxItem : ContentControl
     {
+        /// <summary>
+        /// Означает, является ли данный объект <see cref="ToolboxItem"/> элементом раскадровки или изображением-фоном
+        /// </summary>
         public enum ItemMode { StoryboardItem, StoryboardBackground }
 
+        /// <summary>
+        /// Точка начала перетаскивания (запоминается для поддержки перетаскивания данного элемента панели управления на рабочий холст)
+        /// </summary>
         private Point? DragStartPoint = null;
 
-        public ItemMode Mode
-        {
-            get; set;
-        }
+        /// <summary>
+        /// См. описания типа данного поля
+        /// </summary>
+        public ItemMode Mode { get; set; }
 
         static ToolboxItem()
         {
