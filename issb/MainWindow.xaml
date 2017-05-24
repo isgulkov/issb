@@ -6,6 +6,7 @@
         xmlns:sb="clr-namespace:issb"
         mc:Ignorable="d"
         Title="issb" Height="480" Width="640"
+        Icon="Icons/program_logo.png"
         WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
