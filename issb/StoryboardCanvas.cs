@@ -11,14 +11,29 @@ using System.Xml;
 
 namespace issb
 {
+    /// <summary>
+    /// Представляет собой рабочий холст, на котором во время работы программы отображаются элементы раскадровки и ее фон
+    /// </summary>
     public class StoryboardCanvas : Canvas
     {
+        /// <summary>
+        /// Точка начала перетаскивания (запоминается для поддержки множественного выделения)
+        /// </summary>
         private Point? DragStartPoint = null;
 
+        /// <summary>
+        /// Объект <see cref="BackgroundManager"/>, установленный в качестве менеджера фона для данного рабочего холста
+        /// </summary>
         public BackgroundManager BackgroundManager { get; set; }
 
+        /// <summary>
+        /// Наибольший ZIndex среди элементов раскадровки (запоминается для поддержки изменения взаимного расположения элементов по оси Z во время работы программы)
+        /// </summary>
         int MaximumZIndex = int.MinValue + 1;
 
+        /// <summary>
+        /// Выделенные на данный момент элементы раскадровки
+        /// </summary>
         public IEnumerable<StoryboardItem> SelectedItems
         {
             get
@@ -27,6 +42,9 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Снимает выделения со всех элементов раскадровки, расположенных на данном рабочем холсте
+        /// </summary>
         public void DeselectAll()
         {
             foreach(StoryboardItem selectedItem in SelectedItems) {
@@ -34,6 +52,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Обрабатывает начало множественного выделения элементов раскадровки
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnMouseDown(MouseButtonEventArgs eventArgs)
         {
             base.OnMouseDown(eventArgs);
@@ -45,6 +67,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Обрабатывает движение мыши при множественном выделении элементов раскадровки
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnMouseMove(MouseEventArgs eventArgs)
         {
             base.OnMouseMove(eventArgs);
@@ -66,6 +92,9 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Удаляет выделенные на данный момент элементы раскадровки
+        /// </summary>
         public void DeleteSelectedItems()
         {
             for(int i = 0; i < Children.Count; i++) {
@@ -79,6 +108,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Обрабатывает перетаскивание на данный рабочий холст элементов раскадровки и изображений-фонов с панелей инструментов
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnDrop(DragEventArgs eventArgs)
         {
             base.OnDrop(eventArgs);
@@ -123,6 +156,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Перемещает переданный элемент раскадровки на передний план
+        /// </summary>
+        /// <param name="item">Элемент раскадровки, который предполагается переместить на передний план</param>
         public void BringToFront(StoryboardItem item)
         {
             SetZIndex(item, ++MaximumZIndex);
