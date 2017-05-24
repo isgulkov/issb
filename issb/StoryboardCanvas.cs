@@ -64,6 +64,19 @@ namespace issb
             }
         }
 
+        public void DeleteSelectedItems()
+        {
+            for(int i = 0; i < Children.Count; i++) {
+                StoryboardItem item = Children[i] as StoryboardItem;
+
+                if(item != null) {
+                    if(item.IsSelected) {
+                        Children.RemoveAt(i--);
+                    }
+                }
+            }
+        }
+
         protected override void OnDrop(DragEventArgs eventArgs)
         {
             base.OnDrop(eventArgs);

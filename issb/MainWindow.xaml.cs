@@ -9,6 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using System.Windows.Input;
 
 namespace issb
 {
@@ -74,6 +75,17 @@ namespace issb
             }
             catch(Exception ex) {
                 MessageBox.Show(this, $"Произошла ошибка при загрузке предустановленного контента\r\n\r\n{ex.Message}");
+            }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs eventArgs)
+        {
+            base.OnKeyDown(eventArgs);
+            
+            if(eventArgs.Key == Key.Back || eventArgs.Key == Key.Delete) {
+                MainCanvas.DeleteSelectedItems();
+
+                eventArgs.Handled = true;
             }
         }
 
