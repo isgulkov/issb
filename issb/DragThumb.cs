@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -8,6 +9,7 @@ namespace issb
     public class DragThumb : Thumb
     {
         StoryboardItem CurrentItem;
+        RotateTransform CurrentTransForm;
         StoryboardCanvas CurrentCanvas;
 
         private void DragThumb_DragStarted(object sender, DragStartedEventArgs eventArgs)
@@ -16,6 +18,7 @@ namespace issb
 
             if(CurrentItem != null) {
                 CurrentCanvas = VisualTreeHelper.GetParent(CurrentItem) as StoryboardCanvas;
+                CurrentTransForm = CurrentItem.RenderTransform as RotateTransform;
             }
         }
 
@@ -33,9 +36,15 @@ namespace issb
                 double dHorizontal = Math.Max(-minLeft, eventArgs.HorizontalChange);
                 double dVertical = Math.Max(-minTop, eventArgs.VerticalChange);
 
+                Point dragDelta = new Point(dHorizontal, dVertical);
+
+                if(CurrentTransForm != null) {
+                    dragDelta = CurrentTransForm.Transform(dragDelta);
+                }
+
                 foreach(StoryboardItem item in CurrentCanvas.SelectedItems) {
-                    Canvas.SetLeft(item, Canvas.GetLeft(item) + dHorizontal);
-                    Canvas.SetTop(item, Canvas.GetTop(item) + dVertical);
+                    Canvas.SetLeft(item, Canvas.GetLeft(item) + dragDelta.X);
+                    Canvas.SetTop(item, Canvas.GetTop(item) + dragDelta.Y);
                 }
 
                 eventArgs.Handled = true;
