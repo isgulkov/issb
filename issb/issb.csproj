@@ -150,15 +150,35 @@
     <Resource Include="PresetLibraries\DefaultPresets.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="BackgroundTemplates\template01.xml" />
+    <Resource Include="PresetLibraries\BackgroundTemplates\template01.xml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\program_logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PresetLibraries\BackgroundTemplates\template02.xml" />
+    <Resource Include="PresetLibraries\BackgroundTemplates\template03.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PresetLibraries\ItemImages\full_moon_with_face.png" />
+    <Resource Include="PresetLibraries\ItemImages\gyrocopter.png" />
+    <Resource Include="PresetLibraries\ItemImages\lone_druid.png" />
+    <Resource Include="PresetLibraries\ItemImages\naga_siren.png" />
+    <Resource Include="PresetLibraries\ItemImages\troll_warlord.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PresetLibraries\BackgroundImages\Chrysanthemum.jpg" />
+    <Resource Include="PresetLibraries\BackgroundImages\Desert.jpg" />
+    <Resource Include="PresetLibraries\BackgroundImages\Hydrangeas.jpg" />
+    <Resource Include="PresetLibraries\BackgroundImages\Jellyfish.jpg" />
+    <Resource Include="PresetLibraries\BackgroundImages\Koala.jpg" />
+    <Resource Include="PresetLibraries\BackgroundImages\Lighthouse.jpg" />
+    <Resource Include="PresetLibraries\BackgroundImages\Penguins.jpg" />
+    <Resource Include="PresetLibraries\BackgroundImages\Tulips.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(ProjectDir)BackgroundTemplates\* $(ProjectDir)$(OutDir)BackgroundTemplates\ /Y
-xcopy $(ProjectDir)PresetLibraries\* $(ProjectDir)$(OutDir)PresetLibraries\ /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy $(ProjectDir)PresetLibraries\* $(ProjectDir)$(OutDir)PresetLibraries\ /s /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

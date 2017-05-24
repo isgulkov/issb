@@ -1,0 +1,6 @@
+<?xml version='1.0'?>
+<BackgroundTemplate CanvasWidth="901" CanvasHeight="307">
+	<Frame X="10" Y="10" Width="287" Height="287" />
+	<Frame X="307" Y="10" Width="287" Height="287" />
+	<Frame X="604" Y="10" Width="287" Height="287" />
+</BackgroundTemplate>

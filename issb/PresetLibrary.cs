@@ -86,7 +86,7 @@ namespace issb
                     string filePath = Path.Combine(xmlFolderPath, itemNode.Attributes["Src"].Value);
 
                     if(filePath != null) {
-                        BitmapImage newBitmapImage = new BitmapImage(new Uri(filePath));
+                        BitmapImage newBitmapImage = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute));
 
                         bitmapImages.Add(newBitmapImage);
                     }
