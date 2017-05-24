@@ -54,7 +54,7 @@ namespace issb
                         Canvas.SetLeft(element, frameRect.X);
                         Canvas.SetTop(element, frameRect.Y);
 
-                        Panel.SetZIndex(element, -1000);
+                        Panel.SetZIndex(element, int.MinValue);
 
                         element.IsHitTestVisible = false;
 

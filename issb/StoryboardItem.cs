@@ -38,20 +38,22 @@ namespace issb
         public StoryboardItem()
         {
             Loaded += new RoutedEventHandler(DesignerItem_Loaded);
+
+            Panel.SetZIndex(this, int.MinValue + 1);
         }
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs eventArgs)
         {
             base.OnPreviewMouseDown(eventArgs);
-            StoryboardCanvas designer = VisualTreeHelper.GetParent(this) as StoryboardCanvas;
+            StoryboardCanvas canvas = VisualTreeHelper.GetParent(this) as StoryboardCanvas;
 
-            if(designer != null) {
+            if(canvas != null) {
                 if((Keyboard.Modifiers & (ModifierKeys.Shift | ModifierKeys.Control)) != ModifierKeys.None) {
                     IsSelected = !IsSelected;
                 }
                 else {
                     if(!IsSelected) {
-                        designer.DeselectAll();
+                        canvas.DeselectAll();
                         IsSelected = true;
                     }
                 }
@@ -81,6 +83,17 @@ namespace issb
                         }
                     }
                 }
+            }
+        }
+
+        protected override void OnMouseDoubleClick(MouseButtonEventArgs eventArgs)
+        {
+            base.OnMouseDoubleClick(eventArgs);
+
+            StoryboardCanvas canvas = VisualTreeHelper.GetParent(this) as StoryboardCanvas;
+
+            if(canvas != null) {
+                canvas.BringToFront(this);
             }
         }
     }

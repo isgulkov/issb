@@ -17,6 +17,8 @@ namespace issb
 
         public BackgroundManager BackgroundManager { get; set; }
 
+        int MaximumZIndex = int.MinValue + 1;
+
         public IEnumerable<StoryboardItem> SelectedItems
         {
             get
@@ -119,6 +121,11 @@ namespace issb
                     BackgroundManager.AddImageAt(position, content.Source);
                 }
             }
+        }
+
+        public void BringToFront(StoryboardItem item)
+        {
+            SetZIndex(item, ++MaximumZIndex);
         }
     }
 }
