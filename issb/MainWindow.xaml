@@ -31,7 +31,7 @@
         </Menu>
         <DockPanel>
             <TabControl DockPanel.Dock="Top">
-                <TabItem Header="Персонажи">
+                <TabItem Header="Элементы">
                     <sb:Toolbox x:Name="ItemsToolbox" Background="LightCyan">
                         <ItemsControl.Items>
                             <!-- Populated programmatically -->
