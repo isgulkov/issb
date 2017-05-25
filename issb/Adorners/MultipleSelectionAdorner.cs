@@ -105,18 +105,24 @@ namespace issb
                 adornerLayer.Remove(this);
             }
         }
-        
+
+        /// <summary>
+        /// Перестраивает в пространстве дочерние элементы данного визуального декоратора при перестроении его его родительскими элементом (необходимо для реализации визуального декоратора в WPF)
+        /// </summary>
+        /// <param name="arrangeBounds">Границы расположения элемента</param>
+        /// <returns>Границы расположения элемента</returns>
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
             AdornerCanvas.Arrange(new Rect(arrangeBounds));
+
             return arrangeBounds;
         }
 
         /// <summary>
         /// Возвращает дочерний элемент с переданным индексом (необходимо для реализации визуального декоратора в WPF)
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        /// <param name="index">Индекс дочернего элемента</param>
+        /// <returns>Дочерний элемент с переданным индексом</returns>
         protected override Visual GetVisualChild(int index)
         {
             return Visuals[index];
