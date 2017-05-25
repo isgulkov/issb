@@ -1,30 +1,56 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Controls;
+using System.Xml;
 
 namespace issb
 {
+    /// <summary>
+    /// Представляет собой раскадровку в виде документа со следующими возможностями:
+    /// <list type="bullet">
+    ///     <item>сериализация в XML-формат (см. ПЗ);</item>
+    ///     <item>десериализация из него же;</item>
+    ///     <item>загрузка с рабочего холста программы;</item>
+    ///     <item>выгрузка на него же.</item>
+    /// </list>
+    /// </summary>
     class StoryboardDocument
     {
+        /// <summary>
+        /// Шаблон фона данной раскадровки
+        /// </summary>
         BackgroundTemplate Template;
 
+        /// <summary>
+        /// Изображения-фоны данной раскадровки
+        /// </summary>
         List<ImageSource> FrameBackgrounds;
 
+        /// <summary>
+        /// Представляет собой элемент раскадровки при хранении такового в документе-раскадровке
+        /// </summary>
         class ItemTuple : Tuple<Rect, RotateTransform, ImageSource>
         {
             public ItemTuple(Rect rect, RotateTransform rotateTransform, ImageSource imageSource) : base(rect, rotateTransform, imageSource) { }
         }
 
+        /// <summary>
+        /// Элементы данной раскадровки
+        /// </summary>
         List<ItemTuple> StoryboardItems;
 
         StoryboardDocument() { }
 
+        /// <summary>
+        /// Загружает документ-раскадровку с рабочего холста программы
+        /// </summary>
+        /// <param name="storyboardCanvas">Рабочий холст программы, с которой предполагается загрузить документ-раскадровку</param>
+        /// <returns></returns>
         public static StoryboardDocument LoadFromCanvas(StoryboardCanvas storyboardCanvas)
         {
             StoryboardDocument newDocument = new StoryboardDocument();
@@ -50,7 +76,7 @@ namespace issb
 
                 if(item != null) {
                     RotateTransform itemTransform = item.RenderTransform as RotateTransform;
-                
+
                     item.RenderTransform = null;
 
                     Rect itemRect = new Rect();
@@ -75,6 +101,10 @@ namespace issb
             return newDocument;
         }
 
+        /// <summary>
+        /// Выгружает данный документ-раскадровку на рабочий холст программы
+        /// </summary>
+        /// <param name="storyboardCanvas">Рабочий холст программы, на который предполагается выгрузить данный документ-раскадроку</param>
         public void UnloadOntoCanvas(StoryboardCanvas storyboardCanvas)
         {
             storyboardCanvas.Children.Clear();
@@ -113,6 +143,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Преобразует изображение, сохраненное в двоичном виде в формате base64, в объект <see cref="BitmapImage"/>
+        /// </summary>
+        /// <param name="imageString">Строка, в формате base64, которую предполагается преобразовать в объект <see cref="BitmapImage"/></param>
+        /// <returns>Объект <see cref="BitmapImage"/>, преобразованный из переданной строки</returns>
         static BitmapImage Base64StringToImageSource(string imageString)
         {
             byte[] bytes = Convert.FromBase64String(imageString);
@@ -128,6 +163,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Загружает документ-раскадровку из потока, в котором она доступна для чтения в XML-формате (см. ПЗ)
+        /// </summary>
+        /// <param name="fileStream">Поток, из которого предполагается загрузить документ-раскадровку в XML-формате</param>
+        /// <returns>Документ-раскадровка, загруженная из переданного потока</returns>
         public static StoryboardDocument LoadFromXML(FileStream fileStream)
         {
             StoryboardDocument newDocument = new StoryboardDocument();
@@ -191,6 +231,11 @@ namespace issb
             return newDocument;
         }
 
+        /// <summary>
+        /// Преобразовать изображение из объекта <see cref="ImageSource"/> в двоичный вид в строку в формате base64
+        /// </summary>
+        /// <param name="imageSource">Изображение, которое предполагается преобразовать</param>
+        /// <returns>Строка в формате base64, в которой сохранено переданное изображение</returns>
         static string ImageSourceToBase64String(ImageSource imageSource)
         {
             PngBitmapEncoder encoder = new PngBitmapEncoder();
@@ -207,6 +252,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Сохраняет данный документ-раскадровку в xML-формате (см. ПЗ) в доступный для записи поток
+        /// </summary>
+        /// <param name="fileStream">Поток, в который предполагается сохранить документ-раскадровку</param>
         public void SaveToXML(FileStream fileStream)
         {
             using(StreamWriter streamWriter = new StreamWriter(fileStream)) {

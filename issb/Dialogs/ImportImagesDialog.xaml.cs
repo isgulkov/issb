@@ -1,24 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace issb
 {
     /// <summary>
-    /// Диалоговое окно, предназначенное для загрузки изображений из переданного списка файлов в соответствующие им объекты BitmapImage
+    /// Описывает поведение диалогового окна, предназначенного для загрузки изображений из переданного списка файлов в соответствующие им объекты <see cref="BitmapImage"/>
     /// </summary>
     public partial class ImportImagesDialog : Window
     {
@@ -37,6 +26,11 @@ namespace issb
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Создает соответствующие элементам списка файлов <see cref="FilesToImport"/> объекты <see cref="BitmapImage"/> и размещает их в свойстве <see cref="LoadedBitmaps"/>, после чего закрывает окно
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void Window_Loaded(object sender, RoutedEventArgs eventArgs)
         {
             List<BitmapImage> loadedBitmaps = new List<BitmapImage>();

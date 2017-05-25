@@ -8,14 +8,39 @@ using System.Windows.Shapes;
 
 namespace issb
 {
+    /// <summary>
+    /// Визуальный декоратор (adorner), добавляющий рабочему холсту поддержку множественного выделения с визуальной обратной связью
+    /// </summary>
     public class MultipleSelectionAdorner : Adorner
     {
+        /// <summary>
+        /// Точки противоположных углов прямоугольника зоны выделения
+        /// </summary>
         private Point? SelectionStartPoint, SelectionEndPoint;
+
+        /// <summary>
+        /// Визуальный элемент, выглядящий как прямоугольник, предназначенный для визуального отображения текущей зоны выделения на холсте
+        /// </summary>
         private Rectangle SelectionRect;
+
+        /// <summary>
+        /// Рабочий холст, с которым рабоатет данный визуальный декоратор
+        /// </summary>
         private StoryboardCanvas Canvas;
+
+        /// <summary>
+        /// Коллекция дочерних элементов данного визуального декоратора
+        /// </summary>
         private VisualCollection Visuals;
+
+        /// <summary>
+        /// Холст данного визуального декоратора, на котором отображается зона выделения
+        /// </summary>
         private Canvas AdornerCanvas;
 
+        /// <summary>
+        /// Возвращает число дочерних элементов данного визуального декоратора (необходимо для реализации визуального декоратора в WPF)
+        /// </summary>
         protected override int VisualChildrenCount
         {
             get
@@ -24,6 +49,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Конструктор. Объект данного типа предполагается создавать всякий раз, когда пользователь начинает операцию множественного выделения (путем перетаскивания указателя мыши по холсту с зажатой левой кнопкой)
+        /// </summary>
+        /// <param name="canvas">Холст, на который предполагается добавить данный визуальный декоратор</param>
+        /// <param name="dragStartPoint">Начальная точка зоны выделения</param>
         public MultipleSelectionAdorner(StoryboardCanvas canvas, Point? dragStartPoint) : base(canvas)
         {
             Canvas = canvas;
@@ -42,6 +72,10 @@ namespace issb
             AdornerCanvas.Children.Add(SelectionRect);
         }
 
+        /// <summary>
+        /// Обратаывает перемещение пользователем мыши по холсту, обновляя при этом как визуальное отображение зоны выделения, так и множество выделенных элементов раскадровки на холсте
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnMouseMove(MouseEventArgs eventArgs)
         {
             if(eventArgs.LeftButton == MouseButtonState.Pressed) {
@@ -56,6 +90,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Обрабатывает отпускание пользователем мыши, удаляя визуальные элементы, отображающие зону выделения
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnMouseUp(MouseButtonEventArgs eventArgs)
         {
             if(IsMouseCaptured) {
@@ -68,17 +106,31 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Перестраивает в пространстве дочерние элементы данного визуального декоратора при перестроении его его родительскими элементом (необходимо для реализации визуального декоратора в WPF)
+        /// </summary>
+        /// <param name="arrangeBounds">Границы расположения элемента</param>
+        /// <returns>Границы расположения элемента</returns>
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
             AdornerCanvas.Arrange(new Rect(arrangeBounds));
+
             return arrangeBounds;
         }
 
+        /// <summary>
+        /// Возвращает дочерний элемент с переданным индексом (необходимо для реализации визуального декоратора в WPF)
+        /// </summary>
+        /// <param name="index">Индекс дочернего элемента</param>
+        /// <returns>Дочерний элемент с переданным индексом</returns>
         protected override Visual GetVisualChild(int index)
         {
             return Visuals[index];
         }
 
+        /// <summary>
+        /// Обновляет визуальный элемент зоны выделения в соответствие с текущими точками противоположных углов зоны выделения
+        /// </summary>
         private void UpdateSelectionRect()
         {
             double left = Math.Min(SelectionStartPoint.Value.X, SelectionEndPoint.Value.X);
@@ -94,6 +146,9 @@ namespace issb
             System.Windows.Controls.Canvas.SetTop(SelectionRect, top);
         }
 
+        /// <summary>
+        /// Обновляет множество выделенных элементов на рабочем холсте
+        /// </summary>
         private void UpdateSelection()
         {
             Rect selectionRect = new Rect(SelectionStartPoint.Value, SelectionEndPoint.Value);

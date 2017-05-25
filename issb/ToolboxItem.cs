@@ -6,28 +6,45 @@ using System.Windows.Markup;
 
 namespace issb
 {
+    /// <summary>
+    /// Представляет собой элемент панели инструментов, который можно оттуда перетаскивать на рабочий холст
+    /// </summary>
     public class ToolboxItem : ContentControl
     {
+        /// <summary>
+        /// Означает, является ли данный объект <see cref="ToolboxItem"/> элементом раскадровки или изображением-фоном
+        /// </summary>
         public enum ItemMode { StoryboardItem, StoryboardBackground }
 
+        /// <summary>
+        /// Точка начала перетаскивания (запоминается для поддержки перетаскивания данного элемента панели управления на рабочий холст)
+        /// </summary>
         private Point? DragStartPoint = null;
 
-        public ItemMode Mode
-        {
-            get; set;
-        }
+        /// <summary>
+        /// См. описания типа данного поля
+        /// </summary>
+        public ItemMode Mode { get; set; }
 
         static ToolboxItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ToolboxItem), new FrameworkPropertyMetadata(typeof(ToolboxItem)));
         }
 
+        /// <summary>
+        /// Обратаывает событие нажатия конпки мыши на данном элементе, инициируя процесс его перетаскивания
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnPreviewMouseDown(MouseButtonEventArgs eventArgs)
         {
             base.OnPreviewMouseDown(eventArgs);
             DragStartPoint = new Point?(eventArgs.GetPosition(this));
         }
 
+        /// <summary>
+        /// Обратаывает перемещение мыши при перетаскивания данного элемента, сериализуя элемент-изображение, хранящийся в данном элементе панели управления, для последующей передачи его в виде строки рабочему холсту
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnMouseMove(MouseEventArgs eventArgs)
         {
             base.OnMouseMove(eventArgs);

@@ -4,18 +4,22 @@ using System.Windows.Controls.Primitives;
 
 namespace issb
 {
+    /// <summary>
+    /// Элемент управления, предназначенный для изменения размера элемента раскадровки
+    /// </summary>
     class ResizeThumb : Thumb
     {
+        /// <summary>
+        /// Пермещает элемент раскадровки при перетаскивании данного элемента управления
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void ResizeThumb_DragDelta(object sender, DragDeltaEventArgs eventArgs)
         {
             Control item = DataContext as Control;
 
             if(item != null) {
                 double dVertical, dHorizontal;
-
-                /*
-                TODO: preserve aspect ratio
-                */
 
                 switch(VerticalAlignment) {
                     case System.Windows.VerticalAlignment.Top:

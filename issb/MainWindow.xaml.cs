@@ -1,29 +1,39 @@
-﻿using System;
-using System.Linq;
-using System.IO;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
-using System.Windows.Input;
 
 namespace issb
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Описывает поведение элемента-окна, являющегося главным окном программы
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Название программы (для отображения в заголовке главного окна)
+        /// </summary>
+        readonly string ProgramName = "issb";
+
+        /// <summary>
+        /// Набор шаблонов фона, предназначенный для отображения в диалоговом окне создания нового документа
+        /// </summary>
         List<BackgroundTemplate> CurrentTemplates = new List<BackgroundTemplate>();
-
-        string _CurrentFilePath = null;
-
+        
+        /// <summary>
+        /// Флаг режима "без документа", при котором в программе не открыт и не создан документ-видеораскадровка, и в связи с этим запрещена операция сохранения документа
+        /// </summary>
         bool NoDocumentMode = true;
 
+        /// <summary>
+        /// Отключает режим "без документа", активируя при этом пункты меню, соответствующие операции сохранения документа
+        /// </summary>
         void DisableNoDocumentMode()
         {
             NoDocumentMode = false;
@@ -32,6 +42,9 @@ namespace issb
             SaveDocumentAsMenuItem.IsEnabled = true;
         }
 
+        /// <summary>
+        /// Путь к открытому на данный момент файлу. Переменной присваивается null в том случае, если документ создан, но не сохранен в файле
+        /// </summary>
         string CurrentFilePath
         {
             get
@@ -43,19 +56,27 @@ namespace issb
                 _CurrentFilePath = value;
 
                 if(string.IsNullOrEmpty(value)) {
-                    Title = "issb";
+                    Title = $"Новая видеораскадровка — {ProgramName}";
                 }
                 else {
-                    Title = $"{Path.GetFileName(value)} — issb";
+                    Title = $"{Path.GetFileName(value)} — {ProgramName}";
                 }
             }
         }
+        
+        string _CurrentFilePath = null;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Title = ProgramName;
         }
 
+        /// <summary>
+        /// При загрузке окна загружает библиотеку предварительно загруженных элементов, изображений-фонов и шаблонов фона из библиотеки фонов, по умолчанию расположенной в папке программы
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnContentRendered(EventArgs eventArgs)
         {
             base.OnContentRendered(eventArgs);
@@ -78,6 +99,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// При нажатии кнопок клавиатуры Delete и Backspace инициирует операцию удаления выделенных элементов раскадровки с рабочего холста
+        /// </summary>
+        /// <param name="eventArgs"></param>
         protected override void OnKeyDown(KeyEventArgs eventArgs)
         {
             base.OnKeyDown(eventArgs);
@@ -89,11 +114,19 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Обратаывает нажатие пункта меню, инициируя операцию создания нового документа
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void NewDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
             CreateNewDocument();
         }
 
+        /// <summary>
+        /// Отображает диалоговое окно "Новый документ" и, в случае нажатия пользователем кнопки "OK" в нем, производит создание нового документа
+        /// </summary>
         private void CreateNewDocument()
         {
             NewDocumentDialog newDocumentDialog = new NewDocumentDialog();
@@ -118,6 +151,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Отображает диалоговое окно открытия файла и, в случае выбора пользователем файлов в нем, возвращает коллекцию объектов <see cref="BitmapImage"/>, соответствующих выбранным пользователем файлов-изображений
+        /// </summary>
+        /// <returns>Коллекция изображений, импортированных с диска, в виде объектов <see cref="BitmapImage"/></returns>
         IReadOnlyCollection<BitmapImage> ImportImages()
         {
             OpenFileDialog openDialog = new OpenFileDialog();
@@ -125,20 +162,31 @@ namespace issb
             openDialog.Multiselect = true;
 
             if(openDialog.ShowDialog().Value) {
-                ImportImagesDialog importDialog = new ImportImagesDialog();
+                try {
+                    ImportImagesDialog importDialog = new ImportImagesDialog();
 
-                importDialog.FilesToImport = openDialog.FileNames;
+                    importDialog.FilesToImport = openDialog.FileNames;
 
-                importDialog.Owner = this;
+                    importDialog.Owner = this;
 
-                importDialog.ShowDialog();
+                    importDialog.ShowDialog();
 
-                return importDialog.LoadedBitmaps;
+                    return importDialog.LoadedBitmaps;
+                }
+                catch(Exception ex) {
+                    MessageBox.Show(this, $"При импортировании изображений произошла ошибка\r\n\r\n{ex.Message}");
+                }
             }
 
             return null;
         }
 
+        /// <summary>
+        /// Загружает элементы переданной коллекции изображений, представленные в виде объектов <see cref="BitmapImage"/>, в виде элементов панели инструментов главного окна
+        /// </summary>
+        /// <param name="bitmapImages">Коллекция изображений, которые предполагается загрузить в виде элементов панели инструментов</param>
+        /// <param name="toolbox">Панель инструментов, в которую предполагается загрузить переданные изображения</param>
+        /// <param name="itemMode">Вид элементов панели управления, которые предполагается загрузить в выбранную панель -- элементы раскадровки или изображения-фоны</param>
         void LoadBitmapImagesIntoToolbox(IReadOnlyCollection<BitmapImage> bitmapImages, Toolbox toolbox, ToolboxItem.ItemMode itemMode)
         {
             foreach(BitmapImage bitmapImage in bitmapImages) {
@@ -156,30 +204,57 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Загружает элементы переданной коллекции изображений, в виде элементов панели инструментов, предназначенной для элементов раскадровки 
+        /// </summary>
+        /// <param name="bitmapImages">Коллекция изображений, которые предполагается загрузить в виде элементов панели инструментов, предназначенной для элементов раскадровки</param>
         void LoadBitmapImagesIntoItemsToolbox(IReadOnlyCollection<BitmapImage> bitmapImages)
         {
             LoadBitmapImagesIntoToolbox(bitmapImages, ItemsToolbox, ToolboxItem.ItemMode.StoryboardItem);
         }
 
+        /// <summary>
+        /// Загружает элементы переданной коллекции изображений, в виде элементов панели инструментов, предназначенной для изображений-фонов 
+        /// </summary>
+        /// <param name="bitmapImages">Коллекция изображений, которые предполагается загрузить в виде элементов панели инструментов, предназначенной для изображений-фонов</param>
         void LoadBitmapImagesIntoBackgroundsToolbox(IReadOnlyCollection<BitmapImage> bitmapImages)
         {
             LoadBitmapImagesIntoToolbox(bitmapImages, BackgroundsToolbox, ToolboxItem.ItemMode.StoryboardBackground);
         }
 
+        /// <summary>
+        /// обратаывает нажатие на пункт меню, соответствующий операции импортирования элементов раскадровки, инициируя соответствующую операцию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void ImportItemsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
             IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
-            LoadBitmapImagesIntoItemsToolbox(bitmapImages);
+            if(bitmapImages != null) {
+                LoadBitmapImagesIntoItemsToolbox(bitmapImages);
+            }
         }
 
+        /// <summary>
+        /// обратаывает нажатие на пункт меню, соответствующий операции импортирования изображений-фонов, инициируя соответствующую операцию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void ImportBackgroundImagesMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
             IReadOnlyCollection<BitmapImage> bitmapImages = ImportImages();
 
-            LoadBitmapImagesIntoBackgroundsToolbox(bitmapImages);
+            if(bitmapImages != null) {
+                LoadBitmapImagesIntoBackgroundsToolbox(bitmapImages);
+            }
         }
 
+        /// <summary>
+        /// обратаывает нажатие на пункт меню, соответствующий операции эспортирования видеораскадровки в виде изображения в формате PNG, инициируя соответствующую операцию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void ExportMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
@@ -196,6 +271,10 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Сохраняет текущее содержимое рабочего холста в файле, находящемуся или вновь создаваемому по переданному пути, в виде изображения в формате PNG
+        /// </summary>
+        /// <param name="filePath">Путь, по которому предполагается сохранить текущее содержимое рабочего холста</param>
         void SaveCanvasToPath(string filePath)
         {
             Transform transform = MainCanvas.LayoutTransform;
@@ -224,6 +303,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// обратаывает нажатие на пункт меню, соответствующий операции открытия файла видеораскадровки, инициируя соответствующую операцию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void OpenDocumentMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
             OpenFileDialog openDialog = new OpenFileDialog();
@@ -234,13 +318,16 @@ namespace issb
                 try {
                     OpenDocument(openDialog.FileName);
                 }
-                finally { }
-                //catch(Exception ex) {
-                //    MessageBox.Show(this, $"При попытке открытия файла произошла ошибка\r\n\r\n{ex.Message}");
-                //}
+                catch(Exception ex) {
+                    MessageBox.Show(this, $"При попытке открытия файла произошла ошибка\r\n\r\n{ex.Message}");
+                }
             }
         }
 
+        /// <summary>
+        /// Открывает документ-видеораскадровку, сохраненный в файле по заданному пути, и выгружает его на рабочий холст главного окна
+        /// </summary>
+        /// <param name="filePath">Путь к файлу, содержащему сохраненный документ-видеораскадровку</param>
         void OpenDocument(string filePath)
         {
             using(FileStream fileStream = new FileStream(filePath, FileMode.Open)) {
@@ -256,6 +343,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Обратаывает нажатие на пункт меню, соответствующий операции сохранения файла видеораскадровки, инициируя соответствующую операцию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void SaveDocumentMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if(NoDocumentMode) {
@@ -270,6 +362,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Обратаывает нажатие на пункт меню, соответствующий операции "сохранения файла видеораскадровки как", инициируя соответствующую операцию
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void SaveDocumentAsMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
             if(NoDocumentMode) {
@@ -279,6 +376,10 @@ namespace issb
             SaveDocumentAs();
         }
 
+        /// <summary>
+        /// Загружает с рабочего холста документ-раскадровку и сохраняет его по указанному пути
+        /// </summary>
+        /// <param name="filePath">Путь, по которому предполагается сохранить документ</param>
         void SaveDocument(string filePath)
         {
             StoryboardDocument document = StoryboardDocument.LoadFromCanvas(MainCanvas);
@@ -288,12 +389,14 @@ namespace issb
                     document.SaveToXML(fileStream);
                 }
             }
-            finally { }
-            //catch(Exception ex) {
-            //    MessageBox.Show(this, $"При попытке сохранения файла произошла ошибка\r\n\r\n{ex.Message}");
-            //}
+            catch(Exception ex) {
+                MessageBox.Show(this, $"При попытке сохранения файла произошла ошибка\r\n\r\n{ex.Message}");
+            }
         }
 
+        /// <summary>
+        /// Загружает с рабочего холста документ-раскадровку и сохраняет его по выбираемому пользователем в диалоговом окне пути
+        /// </summary>
         void SaveDocumentAs()
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
@@ -307,12 +410,22 @@ namespace issb
             }
         }
 
-        private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Завершает работу программы
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        private void ExitMenuItem_Click(object sender, RoutedEventArgs eventArgs)
         {
-            Close();
+            Application.Current.Shutdown();
         }
 
-        private void AboutMenuItem_Click_1(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Отображает диалоговое окно "О программе"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        private void AboutMenuItem_Click_1(object sender, RoutedEventArgs eventArgs)
         {
             AboutDialog aboutDialog = new AboutDialog();
 

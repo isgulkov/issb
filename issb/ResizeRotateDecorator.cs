@@ -1,15 +1,23 @@
-﻿using System;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows;
 using System.Windows.Media;
 
 namespace issb
 {
+    /// <summary>
+    /// Элемент-декоратор, добавляющий элементу раскадровки поддержку изменения размера и вращения
+    /// </summary>
     public class ResizeRotateDecorator : Control
     {
+        /// <summary>
+        /// Визуальный декоратор (adorner), представляющий собой элементы управления для изменения его размера и вращения элемента раскадровки
+        /// </summary>
         private Adorner Adorner;
 
+        /// <summary>
+        /// Отображать ли визуальный декоратор с элементами управления
+        /// </summary>
         public bool ShowDecorator
         {
             get { return (bool)GetValue(ShowDecoratorProperty); }
@@ -28,6 +36,9 @@ namespace issb
             Unloaded += new RoutedEventHandler(DesignerItemDecorator_Unloaded);
         }
 
+        /// <summary>
+        /// Скрыть визуальный декоратор
+        /// </summary>
         private void HideAdorner()
         {
             if(Adorner != null) {
@@ -35,6 +46,9 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Отобразить визуальный декоратор
+        /// </summary>
         private void ShowAdorner()
         {
             if(Adorner == null) {
@@ -59,6 +73,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Скрывает и удаляет из памяти визуальный декоратор при выгрузке данного элемента-декоратора
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
         private void DesignerItemDecorator_Unloaded(object sender, RoutedEventArgs eventArgs)
         {
             if(Adorner != null) {
@@ -71,6 +90,11 @@ namespace issb
             }
         }
 
+        /// <summary>
+        /// Скрывает или отображает визуальный декоратор с элементами управления при изменении свойства <see cref="ShowDecorator"/> данного элемента
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="eventArgs"></param>
         private static void ShowDecoratorProperty_Changed(DependencyObject d, DependencyPropertyChangedEventArgs eventArgs)
         {
             ResizeRotateDecorator decorator = (ResizeRotateDecorator)d;
