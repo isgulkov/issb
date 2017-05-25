@@ -11,8 +11,8 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="_Новый" Click="NewDocumentMenuItem_Click"/>
-                <MenuItem Header="_Открыть" Click="OpenDocumentMenuItem_Click" />
+                <MenuItem Header="_Новый..." Click="NewDocumentMenuItem_Click"/>
+                <MenuItem Header="_Открыть..." Click="OpenDocumentMenuItem_Click" />
                 <MenuItem Header="_Сохранить" Click="SaveDocumentMenuItem_Click" IsEnabled="False" Name="SaveDocumentMenuItem" />
                 <MenuItem Header="Сохранить _как..." Click="SaveDocumentAsMenuItem_Click" IsEnabled="False" Name="SaveDocumentAsMenuItem" />
                 <Separator />
