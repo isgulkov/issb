@@ -43,7 +43,7 @@
             </StackPanel>
 
             <StackPanel>
-                <RadioButton x:Name="Radio2" GroupName="template_mode" Content="Открыть шаблон из файла: "/>
+                <RadioButton x:Name="Radio2" GroupName="template_mode" Content="Открыть шаблон из файла: " Margin="0,10,0,0"/>
                 <DockPanel Style="{StaticResource EnableIfRadio2Checked}">
                     <TextBox Name="FilePath" Width="250" IsReadOnly="True" />
                     <Button Content="Открыть..." Click="BrowseButtonClick" />
